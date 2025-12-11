@@ -1,0 +1,759 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}{{ project.title }} | Data Analyst Portfolio{% endblock %}
+{% block meta_description %}{{ project.description }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .breadcrumb {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+        padding: 0 2rem;
+    }
+
+    .breadcrumb a {
+        color: var(--primary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .breadcrumb a:hover {
+        color: var(--accent);
+    }
+
+    .breadcrumb span {
+        color: rgba(232, 236, 244, 0.6);
+        margin: 0 0.3rem;
+    }
+
+    .project-hero {
+        width: 100%;
+        height: 500px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        border-radius: 16px;
+        overflow: hidden;
+        margin: 0 2rem 4rem 2rem;
+        position: relative;
+        box-shadow: 0 20px 60px rgba(10, 132, 255, 0.3);
+    }
+
+    .project-hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .project-hero:hover img {
+        transform: scale(1.02);
+    }
+
+    .project-hero-fallback {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 5rem;
+        color: rgba(255, 255, 255, 0.3);
+    }
+
+    .project-header {
+        margin-bottom: 4rem;
+        padding: 0 2rem;
+    }
+
+    .project-header h1 {
+        font-size: 3.5rem;
+        margin: 1.5rem 0 0 0;
+        line-height: 1.1;
+    }
+
+    .project-featured-badge {
+        display: inline-block;
+        padding: 0.6rem 1.5rem;
+        background: rgba(255, 107, 53, 0.15);
+        border: 1px solid var(--secondary);
+        color: var(--secondary);
+        border-radius: 25px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 1.5rem;
+    }
+
+    .project-description {
+        font-size: 1.05rem;
+        line-height: 1.8;
+        color: rgba(232, 236, 244, 0.9);
+        margin: 4rem 2rem;
+        padding: 0;
+    }
+
+    .project-description p {
+        margin-bottom: 1.5rem;
+    }
+
+    .project-description p:last-child {
+        margin-bottom: 0;
+    }
+
+    .section-title {
+        font-size: 2rem;
+        margin: 5rem 2rem 3rem 2rem;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+    }
+
+    .section-title:first-of-type {
+        margin-top: 2rem;
+    }
+
+    .technologies-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 1rem;
+        margin: 0 2rem 3rem 2rem;
+    }
+
+    .tech-card {
+        padding: 1rem;
+        background: rgba(10, 20, 50, 0.3);
+        border: 1px solid var(--grid-color);
+        border-radius: 8px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .tech-card:hover {
+        border-color: var(--primary);
+        background: rgba(10, 132, 255, 0.1);
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(10, 132, 255, 0.15);
+    }
+
+    .tech-icon {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .tech-name {
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: var(--light);
+    }
+
+    .project-links {
+        display: flex;
+        gap: 2rem;
+        flex-wrap: wrap;
+        margin: 4rem 2rem;
+        padding: 3rem 0;
+        align-items: center;
+    }
+
+    .btn-project {
+        padding: 1.1rem 2.5rem;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 10px;
+        text-decoration: none;
+        text-align: center;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+        font-family: 'Syne', sans-serif;
+        box-shadow: 0 10px 30px rgba(10, 132, 255, 0.2);
+        white-space: nowrap;
+    }
+
+    .btn-primary-link {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        color: white;
+    }
+
+    .btn-primary-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(10, 132, 255, 0.5);
+    }
+
+    .btn-secondary-link {
+        background: rgba(10, 132, 255, 0.1);
+        color: var(--accent);
+        border: 2px solid var(--primary);
+    }
+
+    .btn-secondary-link:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(10, 132, 255, 0.4);
+    }
+
+    .achievements {
+        background: rgba(10, 132, 255, 0.05);
+        border: 1px solid rgba(10, 132, 255, 0.2);
+        border-radius: 12px;
+        padding: 3rem;
+        margin: 4rem 2rem;
+    }
+
+    .achievements h3 {
+        margin-bottom: 2rem;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .achievement-item {
+        display: flex;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.95rem;
+        line-height: 1.7;
+        padding-left: 1rem;
+        border-left: 3px solid var(--primary);
+    }
+
+    .achievement-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .achievement-icon {
+        color: var(--primary);
+        font-weight: 800;
+        flex-shrink: 0;
+        font-size: 1.3rem;
+        width: 24px;
+    }
+
+    .related-projects {
+        margin-top: 5rem;
+        margin-left: 2rem;
+        margin-right: 2rem;
+        padding-top: 4rem;
+        border-top: 1px solid var(--grid-color);
+    }
+
+    .related-projects h2 {
+        margin-bottom: 3rem;
+    }
+
+    .related-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2.5rem;
+        margin-top: 2rem;
+    }
+
+    .related-card {
+        background: rgba(10, 20, 50, 0.4);
+        border: 1px solid var(--grid-color);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    .related-card:hover {
+        transform: translateY(-8px);
+        border-color: var(--primary);
+        box-shadow: 0 20px 50px rgba(10, 132, 255, 0.25);
+    }
+
+    .related-image {
+        width: 100%;
+        height: 180px;
+        background: linear-gradient(135deg, rgba(10, 132, 255, 0.2), rgba(0, 217, 255, 0.1));
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .related-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .related-card:hover .related-image img {
+        transform: scale(1.05);
+    }
+
+    .related-content {
+        padding: 1.5rem;
+    }
+
+    .related-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
+        color: var(--light);
+    }
+
+    .related-link {
+        color: var(--primary);
+        text-decoration: none;
+        font-size: 0.85rem;
+        transition: color 0.3s ease;
+        font-weight: 600;
+    }
+
+    .related-link:hover {
+        color: var(--accent);
+    }
+
+    .share-section {
+        margin: 4rem 2rem;
+        padding: 2.5rem;
+        background: linear-gradient(135deg, rgba(10, 132, 255, 0.08) 0%, rgba(0, 217, 255, 0.05) 100%);
+        border: 1px solid rgba(10, 132, 255, 0.2);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+    }
+
+    .share-label {
+        font-size: 0.95rem;
+        color: var(--accent);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        white-space: nowrap;
+    }
+
+    .share-buttons {
+        display: flex;
+        gap: 1rem;
+    }
+
+    .share-btn {
+        width: 45px;
+        height: 45px;
+        border-radius: 8px;
+        background: rgba(10, 132, 255, 0.1);
+        border: 2px solid var(--primary);
+        color: var(--primary);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .share-btn:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(10, 132, 255, 0.3);
+    }
+
+    @media (max-width: 1024px) {
+        .project-header h1 {
+            font-size: 2.5rem;
+        }
+
+        .project-hero {
+            height: 350px;
+        }
+
+        .project-meta {
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            padding: 2.5rem;
+        }
+
+        .related-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .technologies-grid {
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        }
+
+        .share-section {
+            flex-wrap: wrap;
+        }
+    }
+
+    /* Desktop - Ensure proper side spacing */
+    @media (min-width: 1025px) {
+
+        .project-header,
+        .project-description,
+        .project-links,
+        .share-section,
+        .achievements {
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .breadcrumb {
+            font-size: 0.85rem;
+            padding: 0 1rem;
+        }
+
+        .project-header {
+            padding: 0 1rem;
+        }
+
+        .project-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .project-hero {
+            height: 250px;
+            margin: 0 1rem 2rem 1rem;
+        }
+
+        .project-meta {
+            grid-template-columns: 1fr;
+            padding: 2rem;
+            gap: 1.5rem;
+            margin: 3rem 1rem;
+        }
+
+        .related-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .technologies-grid {
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            margin: 0 1rem 3rem 1rem;
+        }
+
+        .project-links {
+            flex-direction: column;
+            gap: 1rem;
+            margin: 4rem 1rem;
+        }
+
+        .btn-project {
+            width: 100%;
+            justify-content: center;
+            font-size: 0.95rem;
+            padding: 1rem 2rem;
+        }
+
+        .share-section {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+            margin: 4rem 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin: 3rem 1rem 2rem 1rem;
+        }
+
+        .project-description {
+            margin: 3rem 1rem;
+        }
+
+        .achievements {
+            padding: 2rem;
+            margin: 3rem 1rem;
+        }
+
+        .related-projects {
+            margin: 3rem 1rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .project-header h1 {
+            font-size: 1.4rem;
+        }
+
+        .project-hero {
+            height: 200px;
+            margin: 0 0.75rem 1.5rem 0.75rem;
+            border-radius: 12px;
+        }
+
+        .breadcrumb {
+            padding: 0 0.75rem;
+            font-size: 0.8rem;
+            gap: 0.3rem;
+        }
+
+        .project-meta {
+            padding: 1.5rem;
+            margin: 2rem 0.75rem;
+            grid-template-columns: 1fr;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin: 2.5rem 0.75rem 1.5rem 0.75rem;
+        }
+
+        .project-description {
+            margin: 2rem 0.75rem;
+            font-size: 0.95rem;
+        }
+
+        .technologies-grid {
+            gap: 0.75rem;
+            margin: 0 0.75rem 2rem 0.75rem;
+            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+        }
+
+        .tech-card {
+            padding: 0.75rem;
+        }
+
+        .tech-icon {
+            font-size: 1.5rem;
+        }
+
+        .tech-name {
+            font-size: 0.8rem;
+        }
+
+        .project-links {
+            margin: 2rem 0.75rem;
+            gap: 0.75rem;
+        }
+
+        .btn-project {
+            padding: 0.9rem 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .share-section {
+            margin: 2rem 0.75rem;
+            padding: 1.5rem;
+            gap: 1rem;
+        }
+
+        .share-label {
+            font-size: 0.85rem;
+        }
+
+        .share-btn {
+            width: 40px;
+            height: 40px;
+            font-size: 0.85rem;
+        }
+
+        .achievements {
+            padding: 1.5rem;
+            margin: 2rem 0.75rem;
+        }
+
+        .achievement-item {
+            gap: 1rem;
+            font-size: 0.9rem;
+            padding-left: 0.75rem;
+        }
+
+        .related-projects {
+            margin: 2.5rem 0.75rem;
+        }
+
+        .related-grid {
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .related-card {
+            border-radius: 8px;
+        }
+
+        .related-image {
+            height: 150px;
+        }
+
+        .related-content {
+            padding: 1rem;
+        }
+
+        .related-title {
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .share-buttons {
+            gap: 0.75rem;
+        }
+
+        .project-description {
+            margin: 4rem 1rem;
+        }
+
+        .section-title {
+            margin: 5rem 1rem 3rem 1rem;
+            font-size: 1.5rem;
+        }
+
+        .achievements {
+            margin: 4rem 1rem;
+            padding: 2rem;
+        }
+
+        .related-projects {
+            margin-top: 5rem;
+            margin-left: 1rem;
+            margin-right: 1rem;
+            padding-top: 4rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<nav class="breadcrumb">
+    <a href="{% url 'home' %}">Home</a>
+    <span>/</span>
+    <a href="{% url 'projects' %}">Projects</a>
+    <span>/</span>
+    <span>{{ project.title }}</span>
+</nav>
+
+<!-- Project Hero Image -->
+<div class="project-hero">
+    {% if project.image %}
+    <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="eager">
+    {% else %}
+    <div class="project-hero-fallback">📈</div>
+    {% endif %}
+</div>
+
+<!-- Project Header -->
+<div class="project-header">
+    {% if project.featured %}
+    <span class="project-featured-badge">⭐ Featured Project</span>
+    {% endif %}
+    <h1>{{ project.title }}</h1>
+
+    <!-- Meta Information -->
+    <div class="project-meta">
+        {% if project.date_completed %}
+        <div class="meta-item">
+            <span class="meta-label">Completed</span>
+            <span class="meta-value">{{ project.date_completed|date:"F Y" }}</span>
+        </div>
+        {% endif %}
+        <div class="meta-item">
+            <span class="meta-label">Status</span>
+            <span class="meta-value">{{ project.get_status_display }}</span>
+        </div>
+        <div class="meta-item">
+            <span class="meta-label">Category</span>
+            <span class="meta-value">{{ project.get_category_display }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- Description -->
+<div class="project-description">
+    {{ project.detailed_description|linebreaks }}
+</div>
+
+<!-- Project Links -->
+<div class="project-links">
+    {% if project.project_url %}
+    <a href="{{ project.project_url }}" target="_blank" class="btn-project btn-primary-link">
+        🌐 View Live Project
+    </a>
+    {% endif %}
+    {% if project.github_url %}
+    <a href="{{ project.github_url }}" target="_blank" class="btn-project btn-secondary-link">
+        💻 GitHub Repository
+    </a>
+    {% endif %}
+    <a href="{% url 'projects' %}" class="btn-project btn-secondary-link">
+        ← Back to Projects
+    </a>
+</div>
+
+<!-- Share Section -->
+<div class="share-section">
+    <span class="share-label">Share this project:</span>
+    <div class="share-buttons">
+        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ project.title }}"
+            target="_blank" class="share-btn" title="Share on Twitter">𝕏</a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" target="_blank"
+            class="share-btn" title="Share on LinkedIn">in</a>
+        <button class="share-btn" onclick="copyToClipboard('{{ request.build_absolute_uri }}')"
+            title="Copy link">🔗</button>
+    </div>
+</div>
+
+<!-- Technologies -->
+{% if project.technologies %}
+<h2 class="section-title">Technologies Used</h2>
+<div class="technologies-grid">
+    {% for tech in project.get_technologies_list %}
+    <div class="tech-card">
+        <div class="tech-icon">⚙️</div>
+        <div class="tech-name">{{ tech }}</div>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Key Achievements -->
+{% if project.key_achievements %}
+<h2 class="section-title">Key Achievements</h2>
+<div class="achievements">
+    {% for achievement in project.get_achievements_list %}
+    <div class="achievement-item">
+        <span class="achievement-icon">→</span>
+        <span>{{ achievement }}</span>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- Related Projects -->
+{% if related_projects %}
+<div class="related-projects">
+    <h2 class="section-title">Related Projects</h2>
+    <div class="related-grid">
+        {% for related in related_projects %}
+        <a href="{% url 'project_detail' related.pk %}" class="related-card"
+            style="text-decoration: none; color: inherit;">
+            <div class="related-image">
+                {% if related.image %}
+                <img src="{{ related.image.url }}" alt="{{ related.title }}">
+                {% else %}
+                �
+                {% endif %}
+            </div>
+            <div class="related-content">
+                <h3 class="related-title">{{ related.title }}</h3>
+                <p style="font-size: 0.9rem; color: rgba(232, 236, 244, 0.7); margin: 0;">
+                    {{ related.description|truncatewords:15 }}
+                </p>
+            </div>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+<script>
+    function copyToClipboard(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            alert('Link copied to clipboard!');
+        }).catch(() => {
+            alert('Failed to copy link');
+        });
+    }
+</script>
+{% endblock %}

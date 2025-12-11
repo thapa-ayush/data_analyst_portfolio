@@ -1,0 +1,428 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Projects | Data Analyst Portfolio{% endblock %}
+{% block meta_description %}Browse my data analytics projects and portfolio work{% endblock %}
+
+{% block extra_css %}
+<style>
+    .projects-toolbar {
+        display: flex;
+        gap: 2rem;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .filter-group {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
+    .filter-label {
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--accent);
+        font-weight: 600;
+    }
+
+    select {
+        padding: 0.7rem 1rem;
+        background: rgba(10, 20, 50, 0.3);
+        border: 1px solid var(--grid-color);
+        border-radius: 6px;
+        color: var(--light);
+        font-family: 'JetBrains Mono', monospace;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    select:hover,
+    select:focus {
+        border-color: var(--primary);
+        box-shadow: 0 0 15px rgba(10, 132, 255, 0.1);
+    }
+
+    .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .project-card {
+        background: rgba(10, 20, 50, 0.4);
+        border: 1px solid var(--grid-color);
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .project-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px rgba(10, 132, 255, 0.2);
+        border-color: var(--primary);
+    }
+
+    .project-image {
+        width: 100%;
+        height: 200px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        color: rgba(255, 255, 255, 0.3);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .project-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .project-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .project-card:hover .project-overlay {
+        opacity: 1;
+    }
+
+    .project-content {
+        padding: 1.5rem;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .project-featured {
+        display: inline-block;
+        padding: 0.3rem 0.8rem;
+        background: rgba(255, 107, 53, 0.2);
+        border: 1px solid var(--secondary);
+        color: var(--secondary);
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 1rem;
+        width: fit-content;
+    }
+
+    .project-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--light);
+    }
+
+    .project-date {
+        font-size: 0.85rem;
+        color: var(--accent);
+        margin-bottom: 1rem;
+    }
+
+    .project-description {
+        font-size: 0.95rem;
+        color: rgba(232, 236, 244, 0.8);
+        margin-bottom: 1rem;
+        line-height: 1.6;
+        flex-grow: 1;
+    }
+
+    .project-technologies {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .tech-tag {
+        padding: 0.4rem 0.8rem;
+        background: rgba(10, 132, 255, 0.2);
+        border: 1px solid var(--primary);
+        border-radius: 16px;
+        color: var(--accent);
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+
+    .project-links {
+        display: flex;
+        gap: 1rem;
+        margin-top: auto;
+    }
+
+    .project-link {
+        flex: 1;
+        padding: 0.6rem 1rem;
+        background: transparent;
+        border: 1px solid var(--primary);
+        color: var(--primary);
+        border-radius: 6px;
+        text-decoration: none;
+        text-align: center;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        font-family: 'JetBrains Mono', monospace;
+    }
+
+    .project-link:hover {
+        background: var(--primary);
+        color: var(--darker);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: rgba(10, 20, 50, 0.2);
+        border: 1px dashed var(--grid-color);
+        border-radius: 12px;
+        margin: 3rem 0;
+    }
+
+    .empty-state h3 {
+        margin-bottom: 1rem;
+    }
+
+    @media (max-width: 1024px) {
+        .projects-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    @media (max-width: 768px) {
+        .projects-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .projects-toolbar {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .filter-group {
+            width: 100%;
+            flex-direction: column;
+        }
+
+        select {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .projects-toolbar {
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-label {
+            font-size: 0.75rem;
+        }
+
+        select {
+            padding: 0.6rem 0.8rem;
+            font-size: 0.85rem;
+        }
+
+        .projects-grid {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .project-card {
+            border-radius: 8px;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .project-image {
+            height: 180px;
+            font-size: 2rem;
+        }
+
+        .project-content {
+            padding: 1rem;
+        }
+
+        .project-featured {
+            padding: 0.25rem 0.6rem;
+            font-size: 0.7rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .project-date {
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .project-description {
+            font-size: 0.85rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .project-technologies {
+            gap: 0.4rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .tech-tag {
+            padding: 0.3rem 0.6rem;
+            font-size: 0.7rem;
+        }
+
+        .project-links {
+            gap: 0.5rem;
+        }
+
+        .project-link {
+            padding: 0.5rem 0.8rem;
+            font-size: 0.75rem;
+        }
+
+        .empty-state {
+            padding: 2rem 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.3rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section>
+    <p class="section-label">Portfolio</p>
+    <h2>My Projects</h2>
+    <p style="margin-bottom: 2rem; max-width: 600px;">A collection of my recent data analytics projects, showcasing my
+        skills in analysis, visualization, and business intelligence.</p>
+
+    {% if projects %}
+    <!-- Toolbar -->
+    <div class="projects-toolbar">
+        <div class="filter-group">
+            <label class="filter-label">Filter:</label>
+            <select onchange="filterProjects(this.value)">
+                <option value="all">All Projects</option>
+                <option value="featured">Featured Only</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label">Sort:</label>
+            <select onchange="sortProjects(this.value)">
+                <option value="recent">Recent First</option>
+                <option value="alphabetical">Alphabetical</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="projects-grid" id="projectsGrid">
+        {% for project in projects %}
+        <div class="project-card" data-featured="{% if project.featured %}true{% else %}false{% endif %}"
+            data-title="{{ project.title }}" data-date="{{ project.date_completed|date:'Y-m-d'|default:'9999-12-31' }}">
+            <div class="project-image">
+                {% if project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
+                {% else %}
+                📈
+                {% endif %}
+                {% if project.featured %}
+                <div class="project-overlay">
+                    <span style="font-size: 3rem;">⭐</span>
+                </div>
+                {% endif %}
+            </div>
+            <div class="project-content">
+                {% if project.featured %}
+                <span class="project-featured">⭐ Featured</span>
+                {% endif %}
+                <h3 class="project-title">{{ project.title }}</h3>
+                {% if project.date_completed %}
+                <div class="project-date">{{ project.date_completed|date:"M Y" }}</div>
+                {% endif %}
+                <p class="project-description">{{ project.description }}</p>
+                <div class="project-technologies">
+                    {% for tech in project.get_technologies_list|slice:":4" %}
+                    <span class="tech-tag">{{ tech }}</span>
+                    {% endfor %}
+                </div>
+                <div class="project-links">
+                    <a href="{% url 'project_detail' project.pk %}" class="project-link">View Details</a>
+                    {% if project.github_url %}
+                    <a href="{{ project.github_url }}" target="_blank" class="project-link">GitHub</a>
+                    {% endif %}
+                    {% if project.project_url %}
+                    <a href="{{ project.project_url }}" target="_blank" class="project-link">Live</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        function filterProjects(value) {
+            const cards = document.querySelectorAll('.project-card');
+            cards.forEach(card => {
+                if (value === 'all') {
+                    card.style.display = 'flex';
+                } else if (value === 'featured') {
+                    card.style.display = card.dataset.featured === 'true' ? 'flex' : 'none';
+                }
+            });
+        }
+
+        function sortProjects(value) {
+            const grid = document.getElementById('projectsGrid');
+            const cards = Array.from(grid.querySelectorAll('.project-card'));
+
+            if (value === 'alphabetical') {
+                cards.sort((a, b) => a.dataset.title.localeCompare(b.dataset.title));
+            } else if (value === 'recent') {
+                cards.sort((a, b) => new Date(b.dataset.date) - new Date(a.dataset.date));
+            }
+
+            cards.forEach(card => grid.appendChild(card));
+        }
+    </script>
+
+    {% else %}
+    <div class="empty-state">
+        <h3>No Projects Yet</h3>
+        <p>Projects will appear here once you add them in the admin panel.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

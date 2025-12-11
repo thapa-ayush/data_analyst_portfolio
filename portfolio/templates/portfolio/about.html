@@ -1,0 +1,602 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}About {{ about.name }} | Data Analyst{% endblock %}
+{% block meta_description %}Learn more about my background, experience, and education as a data analyst{% endblock %}
+
+{% block extra_css %}
+<style>
+    .about-hero {
+        display: grid;
+        grid-template-columns: 400px 1fr;
+        gap: 4rem;
+        align-items: start;
+        margin-bottom: 4rem;
+    }
+
+    .about-profile {
+        position: relative;
+    }
+
+    .about-image {
+        width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 2px solid var(--primary);
+        aspect-ratio: 1;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+    }
+
+    .about-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .contact-card {
+        background: rgba(10, 20, 50, 0.4);
+        border: 1px solid var(--grid-color);
+        border-radius: 12px;
+        padding: 2rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .contact-item {
+        margin-bottom: 1.5rem;
+    }
+
+    .contact-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .contact-label {
+        font-size: 0.85rem;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 0.5rem;
+    }
+
+    .contact-value {
+        font-size: 1rem;
+        word-break: break-all;
+    }
+
+    .contact-value a {
+        color: var(--primary);
+        text-decoration: none;
+        transition: color 0.3s;
+    }
+
+    .contact-value a:hover {
+        color: var(--accent);
+    }
+
+    .about-bio {
+        line-height: 1.8;
+    }
+
+    .about-bio p {
+        margin-bottom: 1.5rem;
+    }
+
+    .download-btn {
+        margin-top: 2rem;
+    }
+
+    /* Timeline */
+    .timeline {
+        position: relative;
+        padding: 2rem 0;
+    }
+
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 2px;
+        height: 100%;
+        background: linear-gradient(to bottom, var(--primary), transparent);
+    }
+
+    .timeline-item {
+        margin-bottom: 3rem;
+        width: 48%;
+    }
+
+    .timeline-item:nth-child(odd) {
+        margin-left: 0;
+        text-align: right;
+        padding-right: 4%;
+    }
+
+    .timeline-item:nth-child(even) {
+        margin-left: 52%;
+        text-align: left;
+        padding-left: 4%;
+    }
+
+    .timeline-dot {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 20px;
+        background: var(--accent);
+        border: 4px solid var(--darker);
+        border-radius: 50%;
+        top: 2rem;
+    }
+
+    .timeline-item:nth-child(odd) .timeline-dot {
+        left: calc(50% + 2%);
+    }
+
+    .timeline-item:nth-child(even) .timeline-dot {
+        left: calc(50% - 2%);
+    }
+
+    .timeline-content {
+        background: rgba(10, 20, 50, 0.4);
+        border: 1px solid var(--grid-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        position: relative;
+    }
+
+    .timeline-content:hover {
+        box-shadow: 0 15px 35px rgba(10, 132, 255, 0.2);
+        border-color: var(--primary);
+    }
+
+    .timeline-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+
+    .timeline-subtitle {
+        color: var(--accent);
+        font-size: 0.95rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .timeline-date {
+        color: rgba(232, 236, 244, 0.6);
+        font-size: 0.85rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        margin-bottom: 1rem;
+    }
+
+    .timeline-description {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        color: rgba(232, 236, 244, 0.8);
+    }
+
+    .achievements {
+        margin-top: 1rem;
+        list-style: none;
+    }
+
+    .achievements li {
+        padding-left: 1.5rem;
+        margin-bottom: 0.5rem;
+        position: relative;
+        font-size: 0.9rem;
+    }
+
+    .achievements li::before {
+        content: '→';
+        position: absolute;
+        left: 0;
+        color: var(--primary);
+        font-weight: bold;
+    }
+
+    /* Education Grid */
+    .education-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .education-card {
+        background: rgba(10, 20, 50, 0.4);
+        border: 1px solid var(--grid-color);
+        border-radius: 12px;
+        padding: 2rem;
+        display: flex;
+        gap: 2rem;
+    }
+
+    .education-logo {
+        width: 80px;
+        height: 80px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: rgba(255, 255, 255, 0.3);
+        overflow: hidden;
+    }
+
+    .education-logo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .education-info h3 {
+        margin-bottom: 0.5rem;
+    }
+
+    .education-subtitle {
+        color: var(--accent);
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .education-date {
+        color: rgba(232, 236, 244, 0.6);
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+
+    /* Skills Summary Compact Layout */
+    .skills-summary-section {
+        padding: 2rem 0 !important;
+    }
+
+    .skills-grid-compact {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+        column-gap: 4rem;
+    }
+
+    .skills-grid-compact>div {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .skills-grid-compact h3 {
+        margin-bottom: 0.7rem;
+    }
+
+    .skills-grid-compact .skill-item {
+        margin-bottom: 0.35rem;
+    }
+
+    @media (max-width: 1024px) {
+        .about-hero {
+            grid-template-columns: 1fr;
+        }
+
+        .timeline::before {
+            left: 0;
+        }
+
+        .timeline-item {
+            width: 100%;
+            padding-left: 3rem;
+            text-align: left !important;
+            margin-left: 0 !important;
+        }
+
+        .timeline-dot {
+            left: 0;
+        }
+
+        .education-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .about-hero {
+            margin-bottom: 2rem;
+        }
+
+        .about-image {
+            aspect-ratio: auto;
+            max-height: 300px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+{% if about %}
+<section>
+    <!-- About Hero -->
+    <div class="about-hero">
+        <!-- Profile Section -->
+        <div class="about-profile">
+            <div class="about-image">
+                {% if about.profile_image %}
+                <img src="{{ about.profile_image.url }}" alt="{{ about.name }}">
+                {% else %}
+                {{ about.name|first }}
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Bio Section -->
+        <div>
+            <p class="section-label">Get to know me</p>
+            <h1>About Me</h1>
+            <div class="about-bio">
+                <p>{{ about.bio }}</p>
+                <p>I'm passionate about turning raw data into actionable insights that drive business decisions. With
+                    expertise in statistical analysis, data visualization, and business intelligence, I help
+                    organizations understand their data and unlock its potential.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Experience Timeline -->
+{% if experiences %}
+<section>
+    <p class="section-label">Professional History</p>
+    <h2>Experience</h2>
+
+    <div class="timeline">
+        {% for exp in experiences %}
+        <div class="timeline-item" style="position: relative;">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <div class="timeline-title">{{ exp.position }}</div>
+                <div class="timeline-subtitle">{{ exp.company }}{% if exp.location %} • {{ exp.location }}{% endif %}
+                </div>
+                <div class="timeline-date">{{ exp.start_date|date:"M Y" }} - {% if exp.current %}Present{% else %}{{
+                    exp.end_date|date:"M Y" }}{% endif %}</div>
+                <div class="timeline-description">{{ exp.description }}</div>
+                {% if exp.achievements %}
+                <ul class="achievements">
+                    {% for achievement in exp.get_achievements_list %}
+                    <li>{{ achievement }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Education -->
+{% if education %}
+<section>
+    <p class="section-label">Academic Background</p>
+    <h2>Education</h2>
+
+    <div class="education-grid">
+        {% for edu in education %}
+        <div class="education-card">
+            <div class="education-logo">
+                {% if edu.institution_logo %}
+                <img src="{{ edu.institution_logo.url }}" alt="{{ edu.institution }}">
+                {% else %}
+                🎓
+                {% endif %}
+            </div>
+            <div class="education-info">
+                <h3>{{ edu.degree }}</h3>
+                <div class="education-subtitle">{{ edu.institution }}</div>
+                <div class="education-date">{{ edu.start_date|date:"Y" }} - {% if edu.current %}Present{% else %}{{
+                    edu.end_date|date:"Y" }}{% endif %}</div>
+                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">{{ edu.field_of_study }}</p>
+                {% if edu.grade %}
+                <p style="font-size: 0.85rem; color: var(--accent);">Grade: {{ edu.grade }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Skills Summary -->
+{% if skills %}
+<section class="skills-summary-section" style="max-width: 1400px; margin: 0 auto; padding: 0 2rem;">
+    <p class="section-label">Technical Proficiencies</p>
+    <h2>Skills Summary</h2>
+
+    <div class="skills-grid-compact">
+        {% regroup skills by category as skill_categories %}
+        {% for category in skill_categories %}
+        <div>
+            <h3 style="color: var(--accent);">{{ category.grouper|title }}</h3>
+            {% for skill in category.list %}
+            <div class="skill-item">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.2rem; font-size: 0.95rem;">
+                    <span>{{ skill.icon }} {{ skill.name }}</span>
+                    <span style="color: var(--accent); font-weight: 600;">{{ skill.proficiency }}%</span>
+                </div>
+                <div
+                    style="width: 100%; height: 5px; background: rgba(10, 132, 255, 0.2); border-radius: 3px; overflow: hidden;">
+                    <div
+                        style="height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); width: {{ skill.proficiency }}%; border-radius: 3px;">
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Featured Projects -->
+{% if projects %}
+<section style="margin-top: 6rem; max-width: 1400px; margin-left: auto; margin-right: auto; padding: 0 2rem;">
+    <p class="section-label">My Work</p>
+    <h2>Featured Projects</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 3rem;">
+        {% for project in projects %}
+        <div
+            style="background: rgba(10, 20, 50, 0.4); border: 1px solid var(--grid-color); border-radius: 12px; overflow: hidden; transition: all 0.3s ease;">
+            <div
+                style="width: 100%; height: 200px; background: linear-gradient(135deg, rgba(10, 132, 255, 0.2), rgba(0, 217, 255, 0.1)); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                📈
+            </div>
+            <div style="padding: 1.5rem;">
+                <h3 style="margin-bottom: 0.75rem; font-size: 1.2rem;">{{ project.title }}</h3>
+                <p style="color: rgba(232, 236, 244, 0.7); font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5;">
+                    {{ project.description|truncatewords:20 }}</p>
+                {% if project.project_url or project.github_url %}
+                <div>
+                    {% if project.project_url %}
+                    <a href="{{ project.project_url }}" target="_blank" class="btn btn-primary"
+                        style="font-size: 0.85rem; padding: 0.5rem 1rem; margin-right: 0.5rem;">View Project</a>
+                    {% endif %}
+                    {% if project.github_url %}
+                    <a href="{{ project.github_url }}" target="_blank" class="btn btn-secondary"
+                        style="font-size: 0.85rem; padding: 0.5rem 1rem;">GitHub</a>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div style="text-align: center;">
+        <a href="{% url 'projects' %}" class="btn btn-secondary" style="font-size: 1rem;">View All Projects →</a>
+    </div>
+</section>
+{% endif %}
+
+<!-- Contact CTA -->
+<section style="margin-top: 6rem; text-align: center; padding: 4rem 2rem;">
+    <h2 style="margin-bottom: 1.5rem;">Ready to Collaborate?</h2>
+    <p style="color: rgba(232, 236, 244, 0.8); margin-bottom: 2rem; font-size: 1.1rem;">I'm always interested in
+        discussing data analytics projects and opportunities.</p>
+    <a href="{% url 'contact' %}" class="btn btn-primary" style="font-size: 1rem;">Get In Touch</a>
+</section>
+
+{% else %}
+<section style="text-align: center; padding: 6rem 2rem;">
+    <h2>About Section Coming Soon</h2>
+    <p>Profile information will appear here. Add your details in the admin panel.</p>
+</section>
+{% endif %}
+
+<style>
+    @media (max-width: 480px) {
+        .about-header {
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            padding: 2rem 1rem;
+        }
+
+        .about-header h1 {
+            font-size: 1.8rem;
+        }
+
+        .about-profile {
+            max-width: 100%;
+        }
+
+        .about-bio {
+            padding: 0;
+        }
+
+        .about-bio p {
+            font-size: 0.95rem;
+        }
+
+        .timeline {
+            padding: 0 1rem;
+        }
+
+        .timeline-item {
+            margin-left: 1.5rem !important;
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            left: -2rem;
+        }
+
+        .timeline-title {
+            font-size: 1.1rem;
+        }
+
+        .timeline-content {
+            padding-left: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+        }
+
+        .featured-projects {
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            padding: 0 1rem;
+        }
+
+        .featured-project-card {
+            padding: 1rem;
+        }
+
+        .featured-project-card img {
+            height: 180px;
+        }
+
+        .featured-project-meta {
+            gap: 0.5rem;
+        }
+
+        .featured-project-meta span {
+            font-size: 0.75rem;
+        }
+
+        section[style*="margin-top: 6rem"] {
+            margin-top: 3rem !important;
+            padding: 2rem 1rem !important;
+        }
+
+        section[style*="margin-top: 6rem"] h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        section[style*="margin-top: 6rem"] p {
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+
+        section[style*="margin-top: 6rem"] .btn {
+            width: 100%;
+            padding: 0.9rem;
+            font-size: 0.9rem;
+        }
+
+        section[style*="text-align: center; padding: 6rem"] {
+            padding: 3rem 1rem !important;
+        }
+
+        section[style*="text-align: center; padding: 6rem"] h2 {
+            font-size: 1.5rem;
+        }
+    }
+</style>
+{% endblock %}

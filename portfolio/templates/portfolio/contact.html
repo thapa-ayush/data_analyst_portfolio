@@ -1,0 +1,571 @@
+{% extends 'portfolio/base.html' %}
+
+{% block title %}Contact Me | Data Analyst Portfolio{% endblock %}
+{% block meta_description %}Get in touch with me for inquiries, collaborations, or project opportunities{% endblock %}
+
+{% block extra_css %}
+<style>
+    .contact-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 3rem;
+        margin: 3rem 0;
+    }
+
+    /* Form Styles */
+    .contact-form {
+        background: rgba(10, 20, 50, 0.3);
+        border: 1px solid var(--grid-color);
+        border-radius: 12px;
+        padding: 2.5rem;
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group:last-of-type {
+        margin-bottom: 0;
+    }
+
+    .form-label {
+        display: block;
+        font-size: 0.9rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--accent);
+        margin-bottom: 0.5rem;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    textarea {
+        width: 100%;
+        padding: 0.9rem 1rem;
+        background: rgba(10, 20, 50, 0.5);
+        border: 1px solid var(--grid-color);
+        border-radius: 6px;
+        color: var(--light);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.95rem;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="tel"]:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 20px rgba(10, 132, 255, 0.2);
+        background: rgba(10, 20, 50, 0.7);
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 150px;
+    }
+
+    .form-error {
+        margin-top: 0.3rem;
+        color: #FF4C4C;
+        font-size: 0.8rem;
+    }
+
+    .form-group.error input,
+    .form-group.error textarea {
+        border-color: #FF4C4C;
+    }
+
+    .form-submit {
+        width: 100%;
+        padding: 0.9rem 1.5rem;
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+        color: var(--darker);
+        border: none;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-family: 'Syne', sans-serif;
+    }
+
+    .form-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 30px rgba(10, 132, 255, 0.3);
+    }
+
+    .form-submit:active {
+        transform: translateY(0);
+    }
+
+    .form-submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+
+    /* Contact Info Sidebar */
+    .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+    }
+
+    .info-card {
+        background: rgba(10, 20, 50, 0.3);
+        border: 1px solid var(--grid-color);
+        border-radius: 12px;
+        padding: 1.5rem;
+        transition: all 0.3s ease;
+    }
+
+    .info-card:hover {
+        border-color: var(--primary);
+        box-shadow: 0 10px 30px rgba(10, 132, 255, 0.1);
+    }
+
+    .info-icon {
+        font-size: 2rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .info-label {
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--accent);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-content {
+        font-size: 0.95rem;
+        color: var(--light);
+        line-height: 1.6;
+    }
+
+    .info-link {
+        color: var(--primary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+        word-break: break-all;
+    }
+
+    .info-link:hover {
+        color: var(--accent);
+    }
+
+    /* Social Links */
+    .social-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .social-icon {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 1px solid var(--grid-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--primary);
+        text-decoration: none;
+        font-size: 1.2rem;
+        transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+        background: var(--primary);
+        color: var(--darker);
+        border-color: var(--primary);
+        transform: translateY(-5px);
+    }
+
+    /* Messages */
+    .form-message {
+        padding: 1rem;
+        border-radius: 6px;
+        margin-bottom: 1.5rem;
+        display: none;
+    }
+
+    .form-message.show {
+        display: block;
+    }
+
+    .message-success {
+        background: rgba(10, 132, 255, 0.1);
+        border: 1px solid var(--primary);
+        color: var(--primary);
+    }
+
+    .message-error {
+        background: rgba(255, 76, 76, 0.1);
+        border: 1px solid #FF4C4C;
+        color: #FF4C4C;
+    }
+
+    /* FAQ Section */
+    .faq-section {
+        margin: 4rem 0;
+        padding: 2rem;
+        background: rgba(10, 20, 50, 0.2);
+        border-radius: 12px;
+    }
+
+    .faq-title {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    .faq-items {
+        display: grid;
+        gap: 1rem;
+    }
+
+    .faq-item {
+        background: rgba(10, 20, 50, 0.3);
+        border: 1px solid var(--grid-color);
+        border-radius: 8px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .faq-item:hover {
+        border-color: var(--primary);
+    }
+
+    .faq-question {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: 600;
+        color: var(--light);
+    }
+
+    .faq-icon {
+        transition: transform 0.3s ease;
+    }
+
+    .faq-item.active .faq-icon {
+        transform: rotate(180deg);
+    }
+
+    .faq-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        color: rgba(232, 236, 244, 0.8);
+        margin-top: 0;
+        line-height: 1.6;
+    }
+
+    .faq-item.active .faq-answer {
+        max-height: 500px;
+        margin-top: 1rem;
+    }
+
+    @media (max-width: 1024px) {
+        .contact-container {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .contact-form {
+            padding: 1.5rem;
+        }
+
+        .social-links {
+            justify-content: flex-start;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section>
+    <p class="section-label">Get In Touch</p>
+    <h2>Contact Me</h2>
+    <p style="margin-bottom: 3rem; max-width: 600px;">Have a question or project opportunity? I'd love to hear from you.
+        Feel free to reach out through the contact form or connect with me on social media.</p>
+
+    <div class="contact-container">
+        <!-- Contact Form -->
+        <div>
+            <form method="POST" class="contact-form" id="contactForm">
+                {% csrf_token %}
+
+                <div class="form-message" id="formMessage"></div>
+
+                <div class="form-group">
+                    <label for="name" class="form-label">Your Name *</label>
+                    <input type="text" id="name" name="name" placeholder="John Doe" required maxlength="100">
+                    <span class="form-error" id="nameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address *</label>
+                    <input type="email" id="email" name="email" placeholder="john@example.com" required maxlength="100">
+                    <span class="form-error" id="emailError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone" class="form-label">Phone Number (Optional)</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1 (555) 123-4567" maxlength="20">
+                    <span class="form-error" id="phoneError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="subject" class="form-label">Subject *</label>
+                    <input type="text" id="subject" name="subject" placeholder="Project Inquiry" required
+                        maxlength="200">
+                    <span class="form-error" id="subjectError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="message" class="form-label">Message *</label>
+                    <textarea id="message" name="message" placeholder="Tell me about your project or inquiry..."
+                        required maxlength="5000"></textarea>
+                    <span class="form-error" id="messageError"></span>
+                </div>
+
+                <button type="submit" class="form-submit">Send Message</button>
+            </form>
+        </div>
+
+        <!-- Contact Info Sidebar -->
+        <div class="contact-info">
+            <!-- Email -->
+            <div class="info-card">
+                <div class="info-icon">📧</div>
+                <div class="info-label">Email</div>
+                <div class="info-content">
+                    <a href="mailto:{{ about.email }}" class="info-link">{{ about.email }}</a>
+                </div>
+            </div>
+
+            <!-- Phone -->
+            {% if about.phone %}
+            <div class="info-card">
+                <div class="info-icon">📱</div>
+                <div class="info-label">Phone</div>
+                <div class="info-content">
+                    <a href="tel:{{ about.phone }}" class="info-link">{{ about.phone }}</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Location -->
+            {% if about.location %}
+            <div class="info-card">
+                <div class="info-icon">📍</div>
+                <div class="info-label">Location</div>
+                <div class="info-content">
+                    {{ about.location }}
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Social Links -->
+            <div class="info-card">
+                <div class="info-icon">🔗</div>
+                <div class="info-label">Connect</div>
+                <div class="social-links">
+                    {% if about.linkedin_url %}
+                    <a href="{{ about.linkedin_url }}" target="_blank" class="social-icon" title="LinkedIn">in</a>
+                    {% endif %}
+                    {% if about.github_url %}
+                    <a href="{{ about.github_url }}" target="_blank" class="social-icon" title="GitHub">
+                        <span style="font-size: 1.4rem;">⚙️</span>
+                    </a>
+                    {% endif %}
+                    {% if about.twitter_url %}
+                    <a href="{{ about.twitter_url }}" target="_blank" class="social-icon" title="Twitter">𝕏</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Response Time -->
+            <div class="info-card">
+                <div class="info-icon">⏱️</div>
+                <div class="info-label">Response Time</div>
+                <div class="info-content">
+                    Usually within 24-48 hours
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="faq-section">
+        <h3 class="faq-title">Frequently Asked Questions</h3>
+        <div class="faq-items">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What services do you offer?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    I offer data analytics, business intelligence, dashboard development, and data visualization
+                    services. I can help organizations make data-driven decisions and optimize their analytics
+                    infrastructure.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What's your typical project timeline?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Project timelines vary depending on scope and complexity. Simple dashboards may take 2-4 weeks,
+                    while comprehensive BI solutions can take 8-12 weeks. I'll provide a detailed estimate after
+                    discussing your requirements.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>Do you work with remote clients?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Yes, I work with clients worldwide. I'm comfortable with remote collaboration using tools like Zoom,
+                    Slack, and cloud-based platforms for seamless communication and project delivery.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>What's your tech stack?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    I work with Python, SQL, Tableau, Power BI, and cloud platforms like AWS and Google Cloud. I'm also
+                    proficient in data warehousing, ETL processes, and modern analytics frameworks.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>How do I get started?</span>
+                    <span class="faq-icon">▼</span>
+                </div>
+                <div class="faq-answer">
+                    Simply fill out the contact form above and I'll get back to you within 24-48 hours. We can schedule
+                    an initial consultation call to discuss your project needs and explore how I can help.
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // FAQ Accordion
+    document.querySelectorAll('.faq-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.faq-item').forEach(other => {
+                if (other !== item) {
+                    other.classList.remove('active');
+                }
+            });
+            item.classList.toggle('active');
+        });
+    });
+
+    // Form Handling
+    const contactForm = document.getElementById('contactForm');
+    const formMessage = document.getElementById('formMessage');
+
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Reset errors
+        document.querySelectorAll('.form-group').forEach(group => {
+            group.classList.remove('error');
+        });
+        document.querySelectorAll('.form-error').forEach(error => {
+            error.textContent = '';
+        });
+
+        // Validate form
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const subject = document.getElementById('subject').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        let isValid = true;
+
+        if (!name) {
+            document.getElementById('name').parentElement.classList.add('error');
+            document.getElementById('nameError').textContent = 'Name is required';
+            isValid = false;
+        }
+
+        if (!email) {
+            document.getElementById('email').parentElement.classList.add('error');
+            document.getElementById('emailError').textContent = 'Email is required';
+            isValid = false;
+        } else if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+            document.getElementById('email').parentElement.classList.add('error');
+            document.getElementById('emailError').textContent = 'Invalid email format';
+            isValid = false;
+        }
+
+        if (!subject) {
+            document.getElementById('subject').parentElement.classList.add('error');
+            document.getElementById('subjectError').textContent = 'Subject is required';
+            isValid = false;
+        }
+
+        if (!message) {
+            document.getElementById('message').parentElement.classList.add('error');
+            document.getElementById('messageError').textContent = 'Message is required';
+            isValid = false;
+        } else if (message.length < 10) {
+            document.getElementById('message').parentElement.classList.add('error');
+            document.getElementById('messageError').textContent = 'Message must be at least 10 characters';
+            isValid = false;
+        }
+
+        if (!isValid) return;
+
+        // Submit form
+        try {
+            const formData = new FormData(contactForm);
+            const response = await fetch(contactForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            });
+
+            if (response.ok) {
+                formMessage.className = 'form-message show message-success';
+                formMessage.textContent = '✓ Thank you! Your message has been sent successfully. I\'ll get back to you soon.';
+                contactForm.reset();
+                setTimeout(() => {
+                    formMessage.classList.remove('show');
+                }, 5000);
+            } else {
+                formMessage.className = 'form-message show message-error';
+                formMessage.textContent = '✗ Error sending message. Please try again.';
+            }
+        } catch (error) {
+            formMessage.className = 'form-message show message-error';
+            formMessage.textContent = '✗ Error sending message. Please try again.';
+        }
+    });
+</script>
+{% endblock %}
