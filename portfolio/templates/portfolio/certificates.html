@@ -53,15 +53,8 @@
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
-    }
-
-    .certificate-card::before {
-        content: "🏆";
-        position: absolute;
-        top: -20px;
-        right: -20px;
-        font-size: 6rem;
-        opacity: 0.05;
+        display: flex;
+        flex-direction: column;
     }
 
     .certificate-card:hover {
@@ -72,14 +65,9 @@
 
     .certificate-header {
         display: flex;
-        justify-content: space-between;
+        justify-content: flex-end;
         align-items: flex-start;
         margin-bottom: 1.5rem;
-    }
-
-    .certificate-icon {
-        font-size: 2.5rem;
-        opacity: 0.8;
     }
 
     .certificate-status {
@@ -312,8 +300,18 @@
         <div class="certificate-card" data-issued="{{ cert.issue_date|date:'Y-m-d'|default:'9999-12-31' }}"
             data-expiry="{% if cert.expiry_date %}{{ cert.expiry_date|date:'Y-m-d' }}{% else %}9999-12-31{% endif %}"
             data-name="{{ cert.certificate_name }}">
+            
+            <!-- Certificate Image -->
+            <div style="width: 100%; height: 200px; background: linear-gradient(135deg, rgba(10, 132, 255, 0.2), rgba(0, 217, 255, 0.1)); border-radius: 8px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; overflow: hidden;">
+                {% if cert.certificate_image %}
+                <img src="{{ cert.certificate_image.url }}" alt="{{ cert.certificate_name }}" style="width: 100%; height: 100%; object-fit: cover;">
+                {% else %}
+                <span style="font-size: 3rem;">🏆</span>
+                {% endif %}
+            </div>
+            
             <div class="certificate-header">
-                <span class="certificate-icon">🏆</span>
+                <div></div>
                 <span
                     class="certificate-status {% if cert.is_expired %}status-expired{% elif cert.days_until_expiry and cert.days_until_expiry <= 30 %}status-expiring{% else %}status-active{% endif %}">
                     {% if cert.is_expired %}
