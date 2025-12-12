@@ -24,6 +24,7 @@ def home(request):
     """
     about = About.objects.first()
     skills = Skill.objects.all()[:6]  # Top 6 skills
+    certificates = Certificate.objects.order_by('-issue_date')[:4]  # Top 4 certificates
     
     # Show featured projects first, then fill with recent projects if not enough featured
     featured_projects = Project.objects.filter(featured=True).order_by('-date_completed')[:3]
@@ -45,6 +46,7 @@ def home(request):
     context = get_base_context(request)
     context.update({
         'skills': skills,
+        'certificates': certificates,
         'projects': projects,
         'total_projects': total_projects,
         'total_skills': total_skills,

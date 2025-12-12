@@ -160,7 +160,10 @@ class Project(models.Model):
 
     title = models.CharField(max_length=200)
     description = models.TextField()
-    detailed_description = models.TextField(blank=True)
+    detailed_description = models.TextField(
+        blank=True,
+        help_text="Detailed project description. Support for HTML and images. You can include HTML tags for formatting."
+    )
     image = models.ImageField(upload_to='projects/', blank=True, null=True)
     technologies = models.CharField(
         max_length=500,

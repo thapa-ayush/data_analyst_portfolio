@@ -1,7 +1,20 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django.db import models
 from datetime import date
 from .models import About, Skill, Project, Certificate, Experience, Education, ContactMessage
+
+
+class CustomModelForm(admin.ModelAdmin):
+    """Custom model admin with textarea for rich editing"""
+    formfield_overrides = {
+        models.TextField: {'widget': admin.widgets.AdminTextareaWidget(
+            attrs={
+                'rows': 10,
+                'style': 'font-family: monospace; width: 100%;'
+            }
+        )},
+    }
 
 
 # ==================== ABOUT ADMIN ====================
@@ -144,7 +157,7 @@ class SkillAdmin(admin.ModelAdmin):
 
 # ==================== PROJECT ADMIN ====================
 @admin.register(Project)
-class ProjectAdmin(admin.ModelAdmin):
+class ProjectAdmin(CustomModelForm):
     """Enhanced admin for Projects with featured status and tech tags"""
     
     list_display = ('title', 'featured_badge', 'tech_preview', 'date_completed', 'order', 'has_links')
@@ -164,7 +177,7 @@ class ProjectAdmin(admin.ModelAdmin):
         ('Detailed Information', {
             'fields': ('detailed_description',),
             'classes': ('collapse',),
-            'description': 'Full description'
+            'description': 'Full project description. You can use HTML tags for formatting:<br><strong>Examples:</strong><br>&lt;p&gt;Paragraph&lt;/p&gt;<br>&lt;strong&gt;Bold Text&lt;/strong&gt;<br>&lt;em&gt;Italic Text&lt;/em&gt;<br>&lt;h3&gt;Subheading&lt;/h3&gt;<br>&lt;ul&gt;&lt;li&gt;List item&lt;/li&gt;&lt;/ul&gt;<br>&lt;img src="URL" alt="description" style="max-width:100%;"&gt;'
         }),
         ('Technologies & Achievements', {
             'fields': ('technologies', 'key_achievements'),
