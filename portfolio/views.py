@@ -24,7 +24,17 @@ def home(request):
     """
     about = About.objects.first()
     skills = Skill.objects.all()[:6]  # Top 6 skills
-    projects = Project.objects.filter(featured=True)[:3]  # Top 3 featured projects
+    
+    # Show featured projects first, then fill with recent projects if not enough featured
+    featured_projects = Project.objects.filter(featured=True).order_by('-date_completed')[:3]
+    
+    if featured_projects.count() < 3:
+        # If not enough featured projects, add recent projects to fill
+        remaining_needed = 3 - featured_projects.count()
+        recent_projects = Project.objects.exclude(featured=True).order_by('-date_completed')[:remaining_needed]
+        projects = list(featured_projects) + list(recent_projects)
+    else:
+        projects = featured_projects
     
     # Calculate stats - use custom values if set, otherwise count from database
     total_projects = about.stat_projects if about and about.stat_projects else Project.objects.count()
@@ -53,7 +63,17 @@ def about_page(request):
     experiences = Experience.objects.all().order_by('-start_date')
     education = Education.objects.all().order_by('-start_date')
     skills = Skill.objects.all()
-    projects = Project.objects.filter(featured=True)[:6]  # Featured projects
+    
+    # Show featured projects first, then fill with recent projects if not enough featured
+    featured_projects = Project.objects.filter(featured=True).order_by('-date_completed')[:6]
+    
+    if featured_projects.count() < 6:
+        # If not enough featured projects, add recent projects to fill
+        remaining_needed = 6 - featured_projects.count()
+        recent_projects = Project.objects.exclude(featured=True).order_by('-date_completed')[:remaining_needed]
+        projects = list(featured_projects) + list(recent_projects)
+    else:
+        projects = featured_projects
 
     context = get_base_context(request)
     context.update({

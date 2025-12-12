@@ -32,7 +32,7 @@ Your Django portfolio is ready to deploy to PythonAnywhere! Follow these steps t
    - Clone your repository:
    ```bash
    cd /home/yourusername
-   git clone https://github.com/yourusername/data_analyst_portfolio.git
+   git clone https://github.com/thapa-ayush/data_analyst_portfolio.git
    ```
 
 ### Option B: Manual Upload
@@ -122,13 +122,17 @@ Replace the entire content with:
 import os
 import sys
 
-path = '/home/yourusername/data_analyst_portfolio'
-if path not in sys.path:
-    sys.path.append(path)
+# Project path
+sys.path.insert(0, '/home/ayushthapa/data_analyst_portfolio')
 
+# Virtual environment path
+sys.path.insert(0, '/home/ayushthapa/data_analyst_portfolio/venv/lib/python3.10/site-packages')
+
+# Django settings
 os.environ['DJANGO_SETTINGS_MODULE'] = 'portfolio_project.settings'
 
-from django.wsgi import get_wsgi_application
+# Import Django
+from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 ```
 
