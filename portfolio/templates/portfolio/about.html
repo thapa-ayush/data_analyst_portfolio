@@ -459,7 +459,7 @@
                 <div
                     style="width: 100%; height: 5px; background: rgba(10, 132, 255, 0.2); border-radius: 3px; overflow: hidden;">
                     <div
-                        style="height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); width: {{ skill.proficiency }}%; border-radius: 3px;">
+                        style="--proficiency: {{ skill.proficiency }}%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--accent)); width: var(--proficiency); border-radius: 3px;">
                     </div>
                 </div>
             </div>
@@ -569,7 +569,8 @@
 {% endif %}
 
 <!-- Contact CTA -->
-<section style="margin-top: 6rem; text-align: center; padding: 4rem 2rem; box-sizing: border-box; width: 100%;">
+<section
+    style="margin-top: 6rem; text-align: center; padding: 4rem 2rem; box-sizing: border-box; width: 100%; max-width: 100%;">
     <h2 style="margin-bottom: 1.5rem;">Ready to Collaborate?</h2>
     <p style="color: rgba(232, 236, 244, 0.8); margin-bottom: 2rem; font-size: 1.1rem;">I'm always interested in
         discussing data analytics projects and opportunities.</p>

@@ -150,6 +150,7 @@
             display: flex;
             align-items: center;
             padding: 8rem 2rem 4rem;
+            box-sizing: border-box;
         }
 
         .hero-content {
@@ -160,6 +161,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 4rem;
             align-items: center;
+            box-sizing: border-box;
         }
 
         .hero-text {
@@ -376,7 +378,7 @@
 
             .stat-item,
             .stat-card {
-                padding: 0.8rem 0.6rem;
+                padding: 0.85rem 0.6rem;
             }
 
             .stat-number {
@@ -387,18 +389,6 @@
             .stat-label {
                 font-size: 0.75rem;
                 letter-spacing: 0.5px;
-            }
-
-            .data-card {
-                padding: 1rem;
-                margin: 0;
-                width: 100%;
-                box-sizing: border-box;
-            }
-
-            .hero-visual {
-                width: 100%;
-                padding: 0;
             }
         }
 
@@ -742,6 +732,10 @@
         }
 
         @media (max-width: 768px) {
+            .hero {
+                padding: 7rem 1.5rem 3rem;
+            }
+
             section {
                 padding: 3rem 1.5rem;
                 max-width: 100%;
@@ -750,7 +744,6 @@
             .hero-content {
                 grid-template-columns: 1fr;
                 gap: 3rem;
-                padding: 0 1.5rem;
             }
 
             .hero h1 {
@@ -776,16 +769,67 @@
         }
 
         @media (max-width: 480px) {
-            section {
-                padding: 2rem 1rem;
-                max-width: 100%;
-                box-sizing: border-box;
+
+            html,
+            body {
+                overflow-x: hidden !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            * {
+                box-sizing: border-box !important;
+            }
+
+            .hero {
+                padding: 6rem 0 2rem !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
+            section:not(.hero) {
+                padding: 2rem 1rem !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                width: 100% !important;
             }
 
             .hero-content {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-                padding: 0 1rem;
+                grid-template-columns: 1fr !important;
+                gap: 2rem !important;
+                padding: 0 1rem !important;
+            }
+
+            .hero-text {
+                padding: 0 !important;
+            }
+
+            .hero-visual {
+                padding: 0 !important;
+            }
+
+            .data-card {
+                padding: 0 !important;
+                background: transparent !important;
+                border: none !important;
+            }
+
+            .stats-grid {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 1rem !important;
+                padding: 0 !important;
+            }
+
+            .stat-item {
+                padding: 1.5rem 1rem !important;
+                margin: 0 !important;
+                background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(0, 217, 255, 0.05)) !important;
+                border: 1px solid rgba(10, 132, 255, 0.2) !important;
+                border-radius: 12px !important;
+                text-align: center !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
 
             nav {
@@ -920,7 +964,8 @@
                             <span>{{ skill.proficiency }}%</span>
                         </div>
                         <div class="skill-bar">
-                            <div class="skill-progress" style="width: {{ skill.proficiency }}%"></div>
+                            <div class="skill-progress"
+                                style="--proficiency: {{ skill.proficiency }}%; width: var(--proficiency);"></div>
                         </div>
                     </div>
                     {% endfor %}
@@ -995,10 +1040,17 @@
                 {% if messages %}
                 <div style="margin-bottom: 2rem;">
                     {% for message in messages %}
+                    {% if message.tags and 'success' in message.tags %}
                     <div
-                        style="padding: 1rem; border-radius: 8px; margin-bottom: 1rem; {% if message.tags %}background: {% if 'success' in message.tags %}rgba(0, 217, 255, 0.1); border: 1px solid rgba(0, 217, 255, 0.3); color: var(--accent);{% else %}rgba(255, 107, 53, 0.1); border: 1px solid rgba(255, 107, 53, 0.3); color: #FF6B35;{% endif %}{% endif %}">
+                        style="padding: 1rem; border-radius: 8px; margin-bottom: 1rem; background: rgba(0, 217, 255, 0.1); border: 1px solid rgba(0, 217, 255, 0.3); color: var(--accent);">
                         {{ message }}
                     </div>
+                    {% else %}
+                    <div
+                        style="padding: 1rem; border-radius: 8px; margin-bottom: 1rem; background: rgba(255, 107, 53, 0.1); border: 1px solid rgba(255, 107, 53, 0.3); color: #FF6B35;">
+                        {{ message }}
+                    </div>
+                    {% endif %}
                     {% endfor %}
                 </div>
                 {% endif %}

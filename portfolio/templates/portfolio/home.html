@@ -695,7 +695,11 @@
         .stats-section {
             grid-template-columns: 1fr;
             gap: 1.5rem;
-            margin: 6rem 1.5rem 4rem 1.5rem;
+            padding: 0 1.5rem;
+            margin: 6rem 0 4rem 0;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 100%;
         }
 
         .section-title {
@@ -757,10 +761,18 @@
             grid-template-columns: 1fr;
             gap: 1.5rem;
             padding: 0 1rem;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 100%;
+            margin-left: 0;
+            margin-right: 0;
         }
 
         .stat-card {
             padding: 1.5rem;
+            box-sizing: border-box;
+            width: 100%;
+            max-width: 100%;
         }
 
         .stat-number {
@@ -799,7 +811,11 @@
         }
 
         .cta-section {
-            margin: 3rem 1rem;
+            margin: 3rem 0;
+            padding: 0 1rem;
+        }
+
+        .cta-section-inner {
             padding: 2rem 1rem;
         }
     }
@@ -1054,7 +1070,7 @@
             style="position: relative; width: 100%; padding-bottom: 66.67%; background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(0, 217, 255, 0.1)); border: 1px solid rgba(10, 132, 255, 0.2); border-radius: 16px; overflow: hidden;">
             {% for cert in certificates %}
             <div class="cert-slide"
-                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: {% if forloop.first %}flex{% else %}none{% endif %}; align-items: center; justify-content: center; transition: opacity 0.5s ease;">
+                style="--display-mode: {% if forloop.first %}flex{% else %}none{% endif %}; position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: var(--display-mode); align-items: center; justify-content: center; transition: opacity 0.5s ease;">
                 {% if cert.certificate_image %}<img src="{{ cert.certificate_image.url }}" alt="{{ cert.name }}"
                     style="width: 100%; height: 100%; object-fit: cover;">{% else %}<span
                     style="font-size: 5rem; color: rgba(10, 132, 255, 0.3);">🏆</span>{% endif %}

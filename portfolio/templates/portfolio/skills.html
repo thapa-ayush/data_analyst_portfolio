@@ -168,7 +168,8 @@
                 <div class="skill-name">{{ skill.name }}</div>
                 <div class="skill-proficiency">
                     <div class="proficiency-bar">
-                        <div class="proficiency-bar-fill" style="width: {{ skill.proficiency }}%;"></div>
+                        <div class="proficiency-bar-fill"
+                            style="--proficiency: {{ skill.proficiency }}%; width: var(--proficiency);"></div>
                     </div>
                     <div class="proficiency-text">{{ skill.proficiency }}% Proficiency</div>
                 </div>
