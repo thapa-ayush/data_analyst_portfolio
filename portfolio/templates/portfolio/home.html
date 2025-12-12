@@ -906,10 +906,12 @@
                 </div>
             </div>
         </div>
+        {% if about.availability_status %}
         <div class="profile-status">
             <div class="status-indicator"></div>
-            Available for projects
+            {{ about.availability_text }}
         </div>
+        {% endif %}
     </div>
     {% endif %}
 </section>

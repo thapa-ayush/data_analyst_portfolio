@@ -95,6 +95,17 @@ class About(models.Model):
         help_text='Custom count for years of experience (leave blank to auto-count from database)'
     )
     
+    # Availability Status
+    availability_status = models.BooleanField(
+        default=True,
+        help_text='Toggle availability status on/off'
+    )
+    availability_text = models.CharField(
+        max_length=100,
+        default='Available for projects',
+        help_text='Custom availability status text (e.g., "Available for projects", "Currently busy", "Open to opportunities")'
+    )
+    
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

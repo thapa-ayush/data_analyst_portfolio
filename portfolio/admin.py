@@ -43,6 +43,8 @@ class AboutAdmin(admin.ModelAdmin):
                 'hero_cta_primary',
                 'hero_cta_secondary',
                 'show_profile_picture',
+                'availability_status',
+                'availability_text',
             ),
         }),
         ('Homepage Stats Customization', {
