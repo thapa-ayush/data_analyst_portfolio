@@ -449,8 +449,13 @@
         <div
             style="background: rgba(10, 20, 50, 0.4); border: 1px solid var(--grid-color); border-radius: 12px; overflow: hidden; transition: all 0.3s ease;">
             <div
-                style="width: 100%; height: 200px; background: linear-gradient(135deg, rgba(10, 132, 255, 0.2), rgba(0, 217, 255, 0.1)); display: flex; align-items: center; justify-content: center; font-size: 3rem;">
+                style="width: 100%; height: 200px; background: linear-gradient(135deg, rgba(10, 132, 255, 0.2), rgba(0, 217, 255, 0.1)); display: flex; align-items: center; justify-content: center; font-size: 3rem; overflow: hidden;">
+                {% if project.image %}
+                <img src="{{ project.image.url }}" alt="{{ project.title }}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                {% else %}
                 📈
+                {% endif %}
             </div>
             <div style="padding: 1.5rem;">
                 <h3 style="margin-bottom: 0.75rem; font-size: 1.2rem;">{{ project.title }}</h3>
