@@ -310,6 +310,12 @@
             aspect-ratio: auto;
             max-height: 300px;
         }
+
+        /* Certificates grid responsive */
+        section[style*="margin-top: 6rem"]>div[style*="grid-template-columns: repeat(4"] {
+            grid-template-columns: repeat(2, 1fr) !important;
+            gap: 1.5rem !important;
+        }
     }
 </style>
 {% endblock %}
@@ -434,6 +440,70 @@
             {% endfor %}
         </div>
         {% endfor %}
+    </div>
+</section>
+{% endif %}
+
+<!-- Certifications Section -->
+{% if certificates %}
+<section style="margin-top: 6rem; max-width: 1400px; margin-left: auto; margin-right: auto; padding: 0 2rem;">
+    <p class="section-label">Credentials</p>
+    <h2>Certifications</h2>
+
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 3rem;">
+        {% for cert in certificates %}
+        <div
+            style="background: rgba(10, 20, 50, 0.4); border: 1px solid var(--grid-color); border-radius: 12px; overflow: hidden; transition: all 0.3s ease;">
+            <!-- Certificate Image -->
+            <div
+                style="width: 100%; height: 200px; background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(0, 217, 255, 0.1)); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+                {% if cert.image %}
+                <img src="{{ cert.image.url }}" alt="{{ cert.name }}"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+                {% else %}
+                <span style="font-size: 4rem;">🏆</span>
+                {% endif %}
+            </div>
+
+            <!-- Certificate Info -->
+            <div style="padding: 1.5rem;">
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--text); font-size: 1rem;">{{ cert.name }}</h3>
+                <p style="margin: 0 0 0.5rem 0; color: var(--accent); font-size: 0.9rem; font-weight: 500;">{{
+                    cert.organization }}</p>
+
+                <!-- Status Badge -->
+                <div style="margin-bottom: 1rem;">
+                    {% if cert.expiry_date %}
+                    {% if cert.expiry_date > now %}
+                    <span
+                        style="display: inline-block; background: rgba(34, 197, 94, 0.2); color: #22c55e; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">Active</span>
+                    {% else %}
+                    <span
+                        style="display: inline-block; background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">Expired</span>
+                    {% endif %}
+                    {% else %}
+                    <span
+                        style="display: inline-block; background: rgba(10, 132, 255, 0.2); color: var(--primary); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">Permanent</span>
+                    {% endif %}
+                </div>
+
+                <!-- Dates -->
+                <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 1rem;">
+                    <p style="margin: 0 0 0.3rem 0;">📅 <strong>Issued:</strong> {% if cert.issue_date %}{{
+                        cert.issue_date|date:"M Y" }}{% endif %}</p>
+                    {% if cert.expiry_date %}
+                    <p style="margin: 0;">⏱ <strong>Expires:</strong> {{ cert.expiry_date|date:"M Y" }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div style="text-align: center;">
+        <a href="{% url 'certificates' %}"
+            style="display: inline-block; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 0.75rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer;">View
+            All Certifications →</a>
     </div>
 </section>
 {% endif %}
@@ -587,6 +657,12 @@
         section[style*="margin-top: 6rem"] p {
             font-size: 0.95rem;
             margin-bottom: 1.5rem;
+        }
+
+        /* Certificates grid single column on mobile */
+        section[style*="margin-top: 6rem"]>div[style*="grid-template-columns: repeat(4"] {
+            grid-template-columns: 1fr !important;
+            gap: 1rem !important;
         }
 
         section[style*="margin-top: 6rem"] .btn {

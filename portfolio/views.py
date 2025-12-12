@@ -59,10 +59,13 @@ def about_page(request):
     """
     About page view - displays biographical information, experience timeline, and education
     """
+    from django.utils import timezone
+    
     about = About.objects.first()
     experiences = Experience.objects.all().order_by('-start_date')
     education = Education.objects.all().order_by('-start_date')
     skills = Skill.objects.all()
+    certificates = Certificate.objects.order_by('-issue_date')[:4]
     
     # Show featured projects first, then fill with recent projects if not enough featured
     featured_projects = Project.objects.filter(featured=True).order_by('-date_completed')[:6]
@@ -80,7 +83,9 @@ def about_page(request):
         'experiences': experiences,
         'education': education,
         'skills': skills,
+        'certificates': certificates,
         'projects': projects,
+        'now': timezone.now().date(),
     })
 
     return render(request, 'portfolio/about.html', context)
