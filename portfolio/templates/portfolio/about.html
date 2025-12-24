@@ -547,10 +547,10 @@
                 {% endif %}
             </div>
             <div style="padding: 1.5rem;">
-                <h3 style="margin: 0 0 0.5rem 0; color: var(--text-primary); font-size: 1rem;">{{ cert.certificate_name
-                    }}</h3>
-                <p style="margin: 0 0 0.5rem 0; color: var(--accent); font-size: 0.9rem; font-weight: 500;">{{
-                    cert.issuing_organization }}</p>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--text-primary); font-size: 1rem;">{{cert.certificate_name}}
+                </h3>
+                <p style="margin: 0 0 0.5rem 0; color: var(--accent); font-size: 0.9rem; font-weight: 500;">
+                    {{cert.issuing_organization}}</p>
                 <div style="margin-bottom: 1rem;">
                     {% if cert.expiry_date %}
                     {% if cert.expiry_date > now %}
