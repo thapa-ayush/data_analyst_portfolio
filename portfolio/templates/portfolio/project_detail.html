@@ -877,14 +877,15 @@
             margin: 2rem 1rem 1rem 1rem;
             padding: 0;
             box-sizing: border-box;
+            width: calc(100% - 2rem);
         }
 
         .document-container {
             max-height: 400px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-            max-width: 100%;
-            width: 100%;
+            margin: 2rem 1rem;
+            padding: 0;
+            max-width: calc(100% - 2rem);
+            width: calc(100% - 2rem);
             box-sizing: border-box;
         }
 
@@ -903,10 +904,11 @@
 
         .technologies-grid {
             gap: 0.75rem;
-            margin: 0 0 2rem 0;
-            padding: 0 1rem;
+            margin: 0 1rem 2rem 1rem;
+            padding: 0;
             grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
             box-sizing: border-box;
+            width: calc(100% - 2rem);
         }
 
         .tech-card {
@@ -922,11 +924,15 @@
         }
 
         .project-links {
-            margin: 2rem 0;
+            margin: 2rem 1rem;
             gap: 0.75rem;
-            padding: 1.25rem 1rem;
+            padding: 1.25rem;
             box-sizing: border-box;
             flex-direction: column;
+            width: calc(100% - 2rem);
+            background: rgba(10, 20, 50, 0.3);
+            border: 1px solid var(--grid-color);
+            border-radius: 12px;
         }
 
         .btn-project {
@@ -935,13 +941,14 @@
         }
 
         .share-section {
-            margin: 2rem 0;
-            padding: 1.5rem 1rem;
+            margin: 2rem 1rem;
+            padding: 1.5rem;
             gap: 1rem;
             box-sizing: border-box;
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            width: calc(100% - 2rem);
         }
 
         .share-label {
@@ -969,10 +976,11 @@
         }
 
         .related-projects {
-            margin: 2.5rem 0;
-            padding: 1.5rem 1rem;
+            margin: 2.5rem 1rem;
+            padding: 1.5rem;
             box-sizing: border-box;
             overflow-x: hidden;
+            width: calc(100% - 2rem);
         }
 
         .related-projects h2 {
