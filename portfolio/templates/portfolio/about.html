@@ -482,14 +482,14 @@
             style="background: rgba(10, 20, 50, 0.4); border: 1px solid var(--grid-color); border-radius: 12px; overflow: hidden; transition: all 0.3s ease;">
             <div
                 style="width: 100%; height: 200px; background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(0, 217, 255, 0.1)); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
-                {% if cert.certificate_image %}<img src="{{ cert.certificate_image.url }}" alt="{{ cert.name }}"
-                    style="width: 100%; height: 100%; object-fit: cover;">{% else %}<span
-                    style="font-size: 4rem;">🏆</span>{% endif %}
+                {% if cert.certificate_image %}<img src="{{ cert.certificate_image.url }}"
+                    alt="{{ cert.certificate_name }}" style="width: 100%; height: 100%; object-fit: cover;">{% else
+                %}<span style="font-size: 4rem;">🏆</span>{% endif %}
             </div>
             <div style="padding: 1.5rem;">
-                <h3 style="margin: 0 0 0.5rem 0; color: var(--text); font-size: 1rem;">{{ cert.name }}</h3>
+                <h3 style="margin: 0 0 0.5rem 0; color: var(--text); font-size: 1rem;">{{ cert.certificate_name }}</h3>
                 <p style="margin: 0 0 0.5rem 0; color: var(--accent); font-size: 0.9rem; font-weight: 500;">{{
-                    cert.organization }}</p>
+                    cert.issuing_organization }}</p>
                 <div style="margin-bottom: 1rem;">
                     {% if cert.expiry_date %}
                     {% if cert.expiry_date > now %}
@@ -505,8 +505,7 @@
                     {% endif %}
                 </div>
                 <div style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); margin-bottom: 1rem;">
-                    <p style="margin: 0 0 0.3rem 0;">📅 <strong>Issued:</strong> {% if cert.issue_date %}{{
-                        cert.issue_date|date:"M Y" }}{% endif %}</p>
+                    <p style="margin: 0 0 0.3rem 0;">📅 <strong>Issued:</strong> {{ cert.issue_date|date:"M Y" }}</p>
                     {% if cert.expiry_date %}<p style="margin: 0;">⏱ <strong>Expires:</strong> {{
                         cert.expiry_date|date:"M Y" }}</p>{% endif %}
                 </div>

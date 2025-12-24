@@ -886,10 +886,17 @@
                 <span>➜</span>
                 <span>{{ about.hero_cta_primary|default:"View My Work" }}</span>
             </a>
+            {% if about.resume %}
+            <a href="{{ about.resume.url }}" class="btn btn-secondary" download>
+                <span>📄</span>
+                <span>Download Resume</span>
+            </a>
+            {% else %}
             <a href="{% url 'contact' %}" class="btn btn-secondary">
                 <span>✉</span>
                 <span>{{ about.hero_cta_secondary|default:"Get In Touch" }}</span>
             </a>
+            {% endif %}
         </div>
     </div>
 
