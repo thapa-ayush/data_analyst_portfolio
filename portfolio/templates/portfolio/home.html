@@ -39,11 +39,18 @@
         font-weight: 800;
         line-height: 1.1;
         margin-bottom: 1.5rem;
-        background: linear-gradient(135deg, #fff 0%, var(--primary) 100%);
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--primary) 100%);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
         animation: fadeInUp 0.8s ease 0.2s backwards;
+    }
+
+    [data-theme="light"] .hero-heading {
+        background: linear-gradient(135deg, #0F172A 0%, #0066CC 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
     }
 
     .hero-description {
@@ -51,8 +58,12 @@
         line-height: 1.8;
         max-width: 500px;
         margin-bottom: 2.5rem;
-        color: rgba(232, 236, 244, 0.85);
+        color: var(--text-secondary);
         animation: fadeInUp 0.8s ease 0.3s backwards;
+    }
+
+    [data-theme="light"] .hero-description {
+        color: #475569;
     }
 
     .hero-cta {
@@ -273,11 +284,16 @@
         gap: 0.75rem;
         margin-top: 1.5rem;
         padding: 0.75rem 1.5rem;
-        background: rgba(10, 132, 255, 0.1);
-        border: 1px solid rgba(10, 132, 255, 0.3);
+        background: var(--tag-bg);
+        border: 1px solid var(--border-color);
         border-radius: 20px;
         font-size: 0.9rem;
         color: var(--accent);
+    }
+
+    [data-theme="light"] .profile-status {
+        background: rgba(0, 102, 204, 0.08);
+        border-color: rgba(0, 102, 204, 0.2);
     }
 
     .status-indicator {
@@ -313,14 +329,24 @@
     }
 
     .stat-card {
-        background: rgba(10, 20, 50, 0.4);
-        border: 1px solid var(--grid-color);
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 1.5rem 1rem;
         text-align: center;
         backdrop-filter: blur(10px);
         transition: all 0.3s ease;
         animation: fadeInUp 0.8s ease backwards;
+    }
+
+    [data-theme="light"] .stat-card {
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 102, 204, 0.12);
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    [data-theme="light"] .stat-label {
+        color: #475569;
     }
 
     .stat-card:nth-child(1) {
@@ -341,9 +367,9 @@
 
     .stat-card:hover {
         transform: translateY(-8px);
-        box-shadow: 0 20px 50px rgba(10, 132, 255, 0.25);
+        box-shadow: 0 20px 50px var(--card-hover-shadow);
         border-color: var(--primary);
-        background: rgba(10, 20, 50, 0.6);
+        background: var(--bg-card);
     }
 
     .stat-number {
@@ -360,7 +386,7 @@
 
     .stat-label {
         font-size: 0.75rem;
-        color: rgba(232, 236, 244, 0.7);
+        color: var(--text-muted);
         letter-spacing: 1px;
         text-transform: uppercase;
         font-weight: 600;
@@ -388,12 +414,23 @@
         display: inline-block;
     }
 
+    [data-theme="light"] .section-label {
+        color: #0066CC;
+    }
+
     .section-title {
         font-family: 'Syne', sans-serif;
         font-size: 2.5rem;
         font-weight: 800;
         margin-bottom: 0.75rem;
-        background: linear-gradient(135deg, #fff, var(--primary));
+        background: linear-gradient(135deg, var(--text-primary), var(--primary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    [data-theme="light"] .section-title {
+        background: linear-gradient(135deg, #0F172A, #0066CC);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
@@ -401,9 +438,22 @@
 
     .section-description {
         font-size: 1.1rem;
-        color: rgba(232, 236, 244, 0.7);
+        color: var(--text-muted);
         max-width: 600px;
         margin: 0 auto;
+    }
+
+    [data-theme="light"] .section-description {
+        color: #64748B;
+    }
+
+    /* About Intro Card */
+    .about-intro-card {
+        transition: all 0.3s ease;
+    }
+
+    [data-theme="light"] .about-intro-card {
+        box-shadow: 0 4px 20px var(--shadow-color);
     }
 
     .projects-grid {
@@ -414,13 +464,19 @@
     }
 
     .project-card {
-        background: rgba(10, 20, 50, 0.4);
-        border: 1px solid var(--grid-color);
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 16px;
         overflow: hidden;
         transition: all 0.3s ease;
         animation: fadeInUp 0.8s ease backwards;
         position: relative;
+    }
+
+    [data-theme="light"] .project-card {
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 102, 204, 0.12);
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
     }
 
     .project-card::before {
@@ -456,8 +512,8 @@
     .project-card:hover {
         border-color: var(--primary);
         transform: translateY(-10px);
-        box-shadow: 0 25px 60px rgba(10, 132, 255, 0.3);
-        background: rgba(10, 20, 50, 0.6);
+        box-shadow: 0 25px 60px var(--card-hover-shadow);
+        background: var(--bg-card);
     }
 
     .project-image {
@@ -470,6 +526,18 @@
         font-size: 4rem;
         overflow: hidden;
         position: relative;
+    }
+
+    [data-theme="light"] .project-image {
+        background: linear-gradient(135deg, rgba(0, 102, 204, 0.08), rgba(0, 153, 204, 0.05));
+    }
+
+    [data-theme="light"] .project-title {
+        color: #0F172A;
+    }
+
+    [data-theme="light"] .project-description {
+        color: #475569;
     }
 
     .project-image::before {
@@ -489,12 +557,12 @@
         font-size: 1.4rem;
         font-weight: 700;
         margin-bottom: 1rem;
-        color: var(--light);
+        color: var(--text-primary);
     }
 
     .project-description {
         font-size: 0.95rem;
-        color: rgba(232, 236, 244, 0.7);
+        color: var(--text-muted);
         margin-bottom: 1.5rem;
         line-height: 1.6;
     }
@@ -508,12 +576,18 @@
 
     .tag {
         padding: 0.4rem 1rem;
-        background: rgba(10, 132, 255, 0.1);
-        border: 1px solid rgba(10, 132, 255, 0.3);
+        background: var(--tag-bg);
+        border: 1px solid var(--border-color);
         border-radius: 20px;
         font-size: 0.75rem;
         color: var(--accent);
         font-weight: 600;
+    }
+
+    [data-theme="light"] .tag {
+        background: rgba(0, 102, 204, 0.1);
+        border: 1px solid rgba(0, 102, 204, 0.2);
+        color: #0066CC;
     }
 
     .project-link {
@@ -554,13 +628,23 @@
     }
 
     .skill-card {
-        background: rgba(10, 20, 50, 0.4);
-        border: 1px solid var(--grid-color);
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 12px;
         padding: 1.5rem;
         text-align: center;
         transition: all 0.3s ease;
         animation: fadeInUp 0.8s ease backwards;
+    }
+
+    [data-theme="light"] .skill-card {
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 102, 204, 0.12);
+        box-shadow: 0 4px 20px rgba(15, 23, 42, 0.08);
+    }
+
+    [data-theme="light"] .skill-name {
+        color: #0F172A;
     }
 
     .skill-card:nth-child(1) {
@@ -590,8 +674,8 @@
     .skill-card:hover {
         transform: translateY(-5px);
         border-color: var(--primary);
-        box-shadow: 0 15px 40px rgba(10, 132, 255, 0.2);
-        background: rgba(10, 20, 50, 0.6);
+        box-shadow: 0 15px 40px var(--card-hover-shadow);
+        background: var(--bg-card);
     }
 
     .skill-icon {
@@ -603,12 +687,17 @@
         font-family: 'Syne', sans-serif;
         font-weight: 600;
         margin-bottom: 0.5rem;
-        color: var(--light);
+        color: var(--text-primary);
     }
 
     .skill-level {
         font-size: 0.85rem;
         color: var(--accent);
+    }
+
+    [data-theme="light"] .skill-level {
+        color: #0066CC;
+        font-weight: 600;
     }
 
     /* Call to Action Section */
@@ -619,27 +708,41 @@
     }
 
     .cta-section-inner {
-        background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(0, 217, 255, 0.05));
-        border: 1px solid var(--grid-color);
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
         border-radius: 16px;
         padding: 3rem 2rem;
         text-align: center;
         animation: fadeInUp 0.8s ease 2s backwards;
     }
 
+    [data-theme="light"] .cta-section-inner {
+        background: #FFFFFF;
+        border: 1px solid rgba(0, 102, 204, 0.12);
+        box-shadow: 0 4px 25px rgba(15, 23, 42, 0.1);
+    }
+
     .cta-section h2 {
         font-size: 2.2rem;
         margin-bottom: 1rem;
-        color: var(--light);
+        color: var(--text-primary);
+    }
+
+    [data-theme="light"] .cta-section h2 {
+        color: #0F172A;
     }
 
     .cta-section p {
         font-size: 1rem;
-        color: rgba(232, 236, 244, 0.8);
+        color: var(--text-secondary);
         margin-bottom: 2rem;
         max-width: 500px;
         margin-left: auto;
         margin-right: auto;
+    }
+
+    [data-theme="light"] .cta-section p {
+        color: #475569;
     }
 
     /* Responsive Design */
@@ -953,24 +1056,24 @@
     </div>
 
     <div style="max-width: 1000px; margin: 0 auto;">
-        <div
-            style="background: rgba(10, 20, 50, 0.4); border: 1px solid rgba(10, 132, 255, 0.2); border-radius: 12px; padding: 3rem; line-height: 1.8; color: rgba(232, 236, 244, 0.9); font-size: 1.05rem;">
+        <div class="about-intro-card"
+            style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; padding: 3rem; line-height: 1.8; color: var(--text-secondary); font-size: 1.05rem;">
             {% if about.bio %}
             <p style="margin-bottom: 1.5rem;">{{ about.bio }}</p>
             {% endif %}
 
             {% if about.specialization %}
             <div
-                style="margin: 2rem 0; padding: 1.5rem; background: rgba(10, 132, 255, 0.05); border-left: 4px solid var(--primary); border-radius: 8px;">
+                style="margin: 2rem 0; padding: 1.5rem; background: var(--tag-bg); border-left: 4px solid var(--primary); border-radius: 8px;">
                 <strong style="color: var(--primary); display: block; margin-bottom: 0.5rem;">🎯 Specialization</strong>
-                <p style="margin: 0;">{{ about.specialization }}</p>
+                <p style="margin: 0; color: var(--text-secondary);">{{ about.specialization }}</p>
             </div>
             {% endif %}
 
             {% if about.key_strengths %}
             <div style="margin-top: 2rem;">
                 <strong style="color: var(--accent); display: block; margin-bottom: 1rem;">💡 Key Strengths</strong>
-                <p style="margin: 0;">{{ about.key_strengths }}</p>
+                <p style="margin: 0; color: var(--text-secondary);">{{ about.key_strengths }}</p>
             </div>
             {% endif %}
 
