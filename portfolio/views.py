@@ -66,7 +66,7 @@ def about_page(request):
     about = About.objects.first()
     experiences = Experience.objects.all().order_by('-start_date')
     education = Education.objects.all().order_by('-start_date')
-    skills = Skill.objects.all()
+    skills = Skill.objects.all().order_by('category', '-proficiency')
     certificates = Certificate.objects.order_by('-issue_date')[:4]
     
     # Show featured projects first, then fill with recent projects if not enough featured

@@ -97,7 +97,7 @@ class AboutAdmin(admin.ModelAdmin):
 class SkillAdmin(admin.ModelAdmin):
     """Enhanced admin for Skills with proficiency visualization"""
     
-    list_display = ('name', 'category_colored', 'proficiency_bar', 'proficiency', 'icon', 'order')
+    list_display = ('name', 'category_colored', 'proficiency_bar', 'proficiency', 'icon_preview', 'order')
     list_editable = ('order',)
     list_filter = ('category', 'proficiency')
     search_fields = ('name', 'icon')
@@ -105,8 +105,12 @@ class SkillAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Skill Information', {
-            'fields': ('name', 'category', 'icon'),
+            'fields': ('name', 'category'),
             'description': 'Name and category of the skill'
+        }),
+        ('Icon Settings', {
+            'fields': ('icon', 'custom_svg'),
+            'description': 'Select a predefined icon from the dropdown, or choose "Custom SVG" and paste your SVG code below'
         }),
         ('Proficiency', {
             'fields': ('proficiency',),
@@ -119,6 +123,12 @@ class SkillAdmin(admin.ModelAdmin):
     )
     
     actions = ['delete_selected']
+    
+    class Media:
+        css = {
+            'all': []
+        }
+        js = []
     
     def has_delete_permission(self, request, obj=None):
         """Allow deleting skills"""
@@ -155,6 +165,17 @@ class SkillAdmin(admin.ModelAdmin):
             obj.proficiency
         )
     proficiency_bar.short_description = 'Proficiency'
+    
+    def icon_preview(self, obj):
+        """Display icon preview"""
+        svg = obj.get_icon_svg()
+        if svg:
+            return format_html(
+                '<div style="width: 24px; height: 24px; color: #0A84FF;">{}</div>',
+                svg
+            )
+        return '-'
+    icon_preview.short_description = 'Icon'
 
 
 # ==================== PROJECT ADMIN ====================

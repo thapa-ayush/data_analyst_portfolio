@@ -449,7 +449,11 @@
                     </a>
                     {% endif %}
                     {% if about.twitter_url %}
-                    <a href="{{ about.twitter_url }}" target="_blank" class="social-icon" title="Twitter">𝕏</a>
+                    <a href="{{ about.twitter_url }}" target="_blank" class="social-icon" title="Twitter"><svg
+                            viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+                            <path
+                                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                        </svg></a>
                     {% endif %}
                 </div>
             </div>
@@ -477,7 +481,9 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <span>What services do you offer?</span>
-                    <span class="faq-icon">▼</span>
+                    <span class="faq-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        </svg></span>
                 </div>
                 <div class="faq-answer">
                     I offer data analytics, business intelligence, dashboard development, and data visualization
@@ -489,7 +495,9 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <span>What's your typical project timeline?</span>
-                    <span class="faq-icon">▼</span>
+                    <span class="faq-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        </svg></span>
                 </div>
                 <div class="faq-answer">
                     Project timelines vary depending on scope and complexity. Simple dashboards may take 2-4 weeks,
@@ -501,7 +509,9 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <span>Do you work with remote clients?</span>
-                    <span class="faq-icon">▼</span>
+                    <span class="faq-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        </svg></span>
                 </div>
                 <div class="faq-answer">
                     Yes, I work with clients worldwide. I'm comfortable with remote collaboration using tools like Zoom,
@@ -512,7 +522,9 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <span>What's your tech stack?</span>
-                    <span class="faq-icon">▼</span>
+                    <span class="faq-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        </svg></span>
                 </div>
                 <div class="faq-answer">
                     I work with Python, SQL, Tableau, Power BI, and cloud platforms like AWS and Google Cloud. I'm also
@@ -523,7 +535,9 @@
             <div class="faq-item">
                 <div class="faq-question">
                     <span>How do I get started?</span>
-                    <span class="faq-icon">▼</span>
+                    <span class="faq-icon"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                            <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
+                        </svg></span>
                 </div>
                 <div class="faq-answer">
                     Simply fill out the contact form above and I'll get back to you within 24-48 hours. We can schedule
@@ -617,18 +631,18 @@
 
             if (response.ok) {
                 formMessage.className = 'form-message show message-success';
-                formMessage.textContent = '✓ Thank you! Your message has been sent successfully. I\'ll get back to you soon.';
+                formMessage.textContent = 'Thank you! Your message has been sent successfully. I\'ll get back to you soon.';
                 contactForm.reset();
                 setTimeout(() => {
                     formMessage.classList.remove('show');
                 }, 5000);
             } else {
                 formMessage.className = 'form-message show message-error';
-                formMessage.textContent = '✗ Error sending message. Please try again.';
+                formMessage.textContent = 'Error sending message. Please try again.';
             }
         } catch (error) {
             formMessage.className = 'form-message show message-error';
-            formMessage.textContent = '✗ Error sending message. Please try again.';
+            formMessage.textContent = 'Error sending message. Please try again.';
         }
     });
 </script>

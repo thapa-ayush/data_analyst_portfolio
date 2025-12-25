@@ -290,20 +290,22 @@
     .technologies-grid {
         box-sizing: border-box;
         width: 100%;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
         margin: 0 auto 3rem auto;
         max-width: 1200px;
         padding: 0 2rem;
     }
 
     .tech-card {
-        padding: 1rem;
+        padding: 0.5rem 1rem;
         background: var(--bg-card);
         border: 1px solid var(--border-color);
-        border-radius: 8px;
-        text-align: center;
+        border-radius: 20px;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
         transition: all 0.3s ease;
     }
 
@@ -314,17 +316,24 @@
     .tech-card:hover {
         border-color: var(--primary);
         background: var(--tag-bg);
-        transform: translateY(-4px);
-        box-shadow: 0 8px 20px var(--shadow-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px var(--shadow-color);
     }
 
     .tech-icon {
-        font-size: 2rem;
-        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        color: var(--primary);
+    }
+
+    .tech-icon svg {
+        width: 18px;
+        height: 18px;
     }
 
     .tech-name {
-        font-size: 0.9rem;
+        font-size: 0.85rem;
         font-weight: 600;
         color: var(--text-primary);
     }
@@ -388,10 +397,13 @@
         background: var(--bg-card);
         border: 1px solid var(--border-color);
         border-radius: 12px;
-        padding: 2.5rem;
-        margin: 3rem 2rem;
+        padding: 1.5rem 2rem;
+        margin: 2rem 2rem 3rem 2rem;
         box-sizing: border-box;
-        width: 100%;
+        width: calc(100% - 4rem);
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
     }
 
     [data-theme="light"] .achievements {
@@ -399,19 +411,20 @@
     }
 
     .achievements h3 {
-        margin-bottom: 2rem;
-        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+        font-size: 1.3rem;
         font-weight: 700;
     }
 
     .achievement-item {
         display: flex;
-        gap: 1.5rem;
-        margin-bottom: 1.5rem;
-        font-size: 0.95rem;
-        line-height: 1.7;
-        padding-left: 1rem;
-        border-left: 3px solid var(--primary);
+        gap: 1rem;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        line-height: 1.6;
+        padding-left: 0.75rem;
+        border-left: 2px solid var(--primary);
+        align-items: flex-start;
     }
 
     .achievement-item:last-child {
@@ -422,8 +435,11 @@
         color: var(--primary);
         font-weight: 800;
         flex-shrink: 0;
-        font-size: 1.3rem;
-        width: 24px;
+        font-size: 1rem;
+        width: 18px;
+        display: flex;
+        align-items: center;
+        margin-top: 2px;
     }
 
     .related-projects {
@@ -730,22 +746,23 @@
         }
 
         .technologies-grid {
-            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
             margin: 0 1.5rem 2rem 1.5rem;
             box-sizing: border-box;
-            gap: 1rem;
+            gap: 0.5rem;
+            padding: 0;
         }
 
         .tech-card {
-            padding: 0.75rem;
+            padding: 0.4rem 0.8rem;
         }
 
-        .tech-icon {
-            font-size: 1.8rem;
+        .tech-icon svg {
+            width: 16px;
+            height: 16px;
         }
 
         .tech-name {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
         }
 
         .project-links {
@@ -818,16 +835,17 @@
         }
 
         .achievements {
-            padding: 1.5rem;
-            margin: 2.5rem 1.5rem;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem;
+            width: calc(100% - 3rem);
             box-sizing: border-box;
         }
 
         .achievement-item {
-            gap: 1rem;
-            font-size: 0.9rem;
-            padding-left: 0.75rem;
-            margin-bottom: 1rem;
+            gap: 0.75rem;
+            font-size: 0.85rem;
+            padding-left: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
         .related-projects {
@@ -939,24 +957,24 @@
         }
 
         .technologies-grid {
-            gap: 0.75rem;
+            gap: 0.5rem;
             margin: 0 1rem 2rem 1rem;
             padding: 0;
-            grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
             box-sizing: border-box;
             width: calc(100% - 2rem);
         }
 
         .tech-card {
-            padding: 0.75rem;
+            padding: 0.35rem 0.7rem;
         }
 
-        .tech-icon {
-            font-size: 1.5rem;
+        .tech-icon svg {
+            width: 14px;
+            height: 14px;
         }
 
         .tech-name {
-            font-size: 0.8rem;
+            font-size: 0.75rem;
         }
 
         .project-links {
@@ -1000,15 +1018,17 @@
         }
 
         .achievements {
-            padding: 1.5rem;
-            margin: 2rem 1rem;
+            padding: 1rem 1.25rem;
+            margin: 1.5rem 1rem;
+            width: calc(100% - 2rem);
             box-sizing: border-box;
         }
 
         .achievement-item {
-            gap: 1rem;
-            font-size: 0.9rem;
-            padding-left: 0.75rem;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            padding-left: 0.5rem;
+            margin-bottom: 0.6rem;
         }
 
         .related-projects {
@@ -1079,7 +1099,10 @@
         {% if project.image %}
         <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="eager">
         {% else %}
-        <div class="project-hero-fallback">📈</div>
+        <div class="project-hero-fallback"><svg viewBox="0 0 24 24" fill="currentColor"
+                style="width: 80px; height: 80px;">
+                <path d="M3.5 18.5l6-6 4 4L22 6.92 20.59 5.5l-7.09 8.58-4-4L2 18.5h1.5z" />
+            </svg></div>
         {% endif %}
     </div>
 </div>
@@ -1087,7 +1110,10 @@
 <!-- Project Header -->
 <div class="project-header">
     {% if project.featured %}
-    <span class="project-featured-badge">⭐ Featured Project</span>
+    <span class="project-featured-badge"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"
+            style="vertical-align: middle; margin-right: 4px;">
+            <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+        </svg>Featured Project</span>
     {% endif %}
     <h1>{{ project.title }}</h1>
 
@@ -1114,30 +1140,27 @@
 <div class="project-links">
     {% if project.project_url %}
     <a href="{{ project.project_url }}" target="_blank" class="btn-project btn-primary-link">
-        🌐 View Live Project
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"
+            style="vertical-align: middle; margin-right: 6px;">
+            <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z" />
+        </svg>View Live Project
     </a>
     {% endif %}
     {% if project.github_url %}
     <a href="{{ project.github_url }}" target="_blank" class="btn-project btn-secondary-link">
-        💻 GitHub Repository
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"
+            style="vertical-align: middle; margin-right: 6px;">
+            <path
+                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+        </svg>GitHub Repository
     </a>
     {% endif %}
     <a href="{% url 'projects' %}" class="btn-project btn-secondary-link">
-        ← Back to Projects
+        <svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16" style="margin-right: 4px;">
+            <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z" />
+        </svg> Back to Projects
     </a>
-</div>
-
-<!-- Share Section -->
-<div class="share-section">
-    <span class="share-label">Share this project:</span>
-    <div class="share-buttons">
-        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ project.title }}"
-            target="_blank" class="share-btn" title="Share on Twitter">𝕏</a>
-        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" target="_blank"
-            class="share-btn" title="Share on LinkedIn">in</a>
-        <button class="share-btn" onclick="copyToClipboard('{{ request.build_absolute_uri }}')"
-            title="Copy link">🔗</button>
-    </div>
 </div>
 
 <!-- Technologies -->
@@ -1146,7 +1169,10 @@
 <div class="technologies-grid">
     {% for tech in project.get_technologies_list %}
     <div class="tech-card">
-        <div class="tech-icon">⚙️</div>
+        <div class="tech-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            </svg></div>
         <div class="tech-name">{{ tech }}</div>
     </div>
     {% endfor %}
@@ -1159,7 +1185,9 @@
 <div class="achievements">
     {% for achievement in project.get_achievements_list %}
     <div class="achievement-item">
-        <span class="achievement-icon">→</span>
+        <span class="achievement-icon"><svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg></span>
         <span>{{ achievement }}</span>
     </div>
     {% endfor %}
@@ -1169,12 +1197,36 @@
 <!-- Description in PDF-like Document -->
 <div class="document-container">
     <div class="document-header">
-        <h3>📄 Project Details</h3>
+        <h3><svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20"
+                style="vertical-align: middle; margin-right: 8px;">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z" />
+            </svg>Project Overview</h3>
     </div>
     <div class="document-scroll" id="projectContent">
         {{ project.detailed_description|safe }}
     </div>
 </div>
+
+<!-- Share Section -->
+<div class="share-section">
+    <span class="share-label">Share this project:</span>
+    <div class="share-buttons">
+        <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ project.title }}"
+            target="_blank" class="share-btn" title="Share on Twitter"><svg viewBox="0 0 24 24" fill="currentColor"
+                width="18" height="18">
+                <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg></a>
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ request.build_absolute_uri }}" target="_blank"
+            class="share-btn" title="Share on LinkedIn">in</a>
+        <button class="share-btn" onclick="copyToClipboard('{{ request.build_absolute_uri }}')" title="Copy link"><svg
+                viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                <path
+                    d="M3.9 12c0-1.71 1.39-3.1 3.1-3.1h4V7H7c-2.76 0-5 2.24-5 5s2.24 5 5 5h4v-1.9H7c-1.71 0-3.1-1.39-3.1-3.1zM8 13h8v-2H8v2zm9-6h-4v1.9h4c1.71 0 3.1 1.39 3.1 3.1s-1.39 3.1-3.1 3.1h-4V17h4c2.76 0 5-2.24 5-5s-2.24-5-5-5z" />
+            </svg></button>
+    </div>
+</div>
+
 {% if related_projects %}
 <div class="related-projects">
     <h2 class="section-title">Related Projects</h2>
@@ -1186,7 +1238,11 @@
                 {% if related.image %}
                 <img src="{{ related.image.url }}" alt="{{ related.title }}">
                 {% else %}
-                📊
+                <svg viewBox="0 0 24 24" fill="currentColor"
+                    style="width: 50px; height: 50px; color: rgba(10, 132, 255, 0.5);">
+                    <path
+                        d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zM9 17H7v-7h2v7zm4 0h-2V7h2v10zm4 0h-2v-4h2v4z" />
+                </svg>
                 {% endif %}
             </div>
             <div class="related-content">
