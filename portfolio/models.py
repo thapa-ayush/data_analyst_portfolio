@@ -344,6 +344,27 @@ class Project(models.Model):
         return [achievement.strip() for achievement in self.key_achievements.split('\n') if achievement.strip()]
 
 
+class ProjectImage(models.Model):
+    """Model for multiple images per project"""
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        related_name='images'
+    )
+    image = models.ImageField(upload_to='projects/gallery/')
+    caption = models.CharField(max_length=200, blank=True, help_text="Optional caption for the image")
+    order = models.IntegerField(default=0, help_text="Display order (lower numbers appear first)")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['order', 'created_at']
+        verbose_name = "Project Image"
+        verbose_name_plural = "Project Images"
+
+    def __str__(self):
+        return f"{self.project.title} - Image {self.order}"
+
+
 class Certificate(models.Model):
     """Model for professional certifications"""
     certificate_name = models.CharField(max_length=200)
@@ -415,22 +436,68 @@ class Education(models.Model):
     institution = models.CharField(max_length=200)
     degree = models.CharField(max_length=200)
     field_of_study = models.CharField(max_length=200)
-    start_date = models.DateField()
-    end_date = models.DateField(blank=True, null=True)
+    
+    # Flexible date fields - only year is required if any date info is provided
+    start_year = models.IntegerField(blank=True, null=True, help_text="e.g., 2020")
+    start_month = models.IntegerField(blank=True, null=True, help_text="1-12 (optional)")
+    end_year = models.IntegerField(blank=True, null=True, help_text="e.g., 2024")
+    end_month = models.IntegerField(blank=True, null=True, help_text="1-12 (optional)")
+    
     current = models.BooleanField(default=False)
     grade = models.CharField(max_length=50, blank=True)
     description = models.TextField(blank=True)
     institution_logo = models.ImageField(upload_to='institutions/', blank=True, null=True)
+    certificate_image = models.ImageField(
+        upload_to='education_certificates/', 
+        blank=True, 
+        null=True,
+        help_text="Upload certificate/diploma image (optional)"
+    )
     order = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['order', '-start_date']
+        ordering = ['order', '-end_year', '-start_year']
         verbose_name_plural = "Education"
 
     def __str__(self):
         return f"{self.degree} - {self.institution}"
+    
+    def get_start_display(self):
+        """Format start date for display"""
+        if not self.start_year:
+            return None
+        if self.start_month:
+            from datetime import date
+            month_name = date(2000, self.start_month, 1).strftime('%b')
+            return f"{month_name} {self.start_year}"
+        return str(self.start_year)
+    
+    def get_end_display(self):
+        """Format end date for display"""
+        if self.current:
+            return "Present"
+        if not self.end_year:
+            return None
+        if self.end_month:
+            from datetime import date
+            month_name = date(2000, self.end_month, 1).strftime('%b')
+            return f"{month_name} {self.end_year}"
+        return str(self.end_year)
+    
+    def get_date_range(self):
+        """Get formatted date range string"""
+        start = self.get_start_display()
+        end = self.get_end_display()
+        
+        if start and end:
+            return f"{start} - {end}"
+        elif start:
+            return f"Started {start}"
+        elif end:
+            return f"Completed {end}"
+        return ""
 
 
 class ContactMessage(models.Model):

@@ -1,517 +1,16 @@
 {% extends 'portfolio/base.html' %}
+{% load static %}
 
 {% block title %}About {{ about.name }} | Data Analyst{% endblock %}
 {% block meta_description %}Learn more about my background, experience, and education as a data analyst{% endblock %}
 
 {% block extra_css %}
-<style>
-    .about-hero {
-        display: grid;
-        grid-template-columns: 400px 1fr;
-        gap: 4rem;
-        align-items: start;
-        margin-bottom: 4rem;
-    }
-
-    .about-profile {
-        position: relative;
-    }
-
-    .about-image {
-        width: 100%;
-        border-radius: 16px;
-        overflow: hidden;
-        border: 2px solid var(--primary);
-        aspect-ratio: 1;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 2rem;
-    }
-
-    .about-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .contact-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 2rem;
-        backdrop-filter: blur(10px);
-    }
-
-    [data-theme="light"] .contact-card {
-        box-shadow: 0 4px 15px var(--shadow-color);
-    }
-
-    .contact-item {
-        margin-bottom: 1.5rem;
-    }
-
-    .contact-item:last-child {
-        margin-bottom: 0;
-    }
-
-    .contact-label {
-        font-size: 0.85rem;
-        color: var(--accent);
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 0.5rem;
-    }
-
-    [data-theme="light"] .contact-label {
-        color: var(--primary);
-    }
-
-    .contact-value {
-        font-size: 1rem;
-        word-break: break-all;
-        color: var(--text-primary);
-    }
-
-    .contact-value a {
-        color: var(--primary);
-        text-decoration: none;
-        transition: color 0.3s;
-    }
-
-    .contact-value a:hover {
-        color: var(--accent);
-    }
-
-    .about-bio {
-        line-height: 1.8;
-    }
-
-    .about-bio p {
-        margin-bottom: 1.5rem;
-    }
-
-    .download-btn {
-        margin-top: 2rem;
-    }
-
-    /* Timeline */
-    .timeline {
-        position: relative;
-        padding: 2rem 0;
-    }
-
-    .timeline::before {
-        content: '';
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 2px;
-        height: 100%;
-        background: linear-gradient(to bottom, var(--primary), transparent);
-    }
-
-    .timeline-item {
-        margin-bottom: 3rem;
-        width: 48%;
-    }
-
-    .timeline-item:nth-child(odd) {
-        margin-left: 0;
-        text-align: right;
-        padding-right: 4%;
-    }
-
-    .timeline-item:nth-child(even) {
-        margin-left: 52%;
-        text-align: left;
-        padding-left: 4%;
-    }
-
-    .timeline-dot {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 20px;
-        height: 20px;
-        background: var(--accent);
-        border: 4px solid var(--bg-primary);
-        border-radius: 50%;
-        top: 2rem;
-    }
-
-    .timeline-item:nth-child(odd) .timeline-dot {
-        left: calc(50% + 2%);
-    }
-
-    .timeline-item:nth-child(even) .timeline-dot {
-        left: calc(50% - 2%);
-    }
-
-    .timeline-content {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 1.5rem;
-        position: relative;
-    }
-
-    [data-theme="light"] .timeline-content {
-        box-shadow: 0 4px 15px var(--shadow-color);
-    }
-
-    .timeline-content:hover {
-        box-shadow: 0 15px 35px var(--card-hover-shadow);
-        border-color: var(--primary);
-    }
-
-    .timeline-title {
-        font-size: 1.3rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        color: var(--text-primary);
-    }
-
-    .timeline-subtitle {
-        color: var(--accent);
-        font-size: 0.95rem;
-        margin-bottom: 0.5rem;
-    }
-
-    [data-theme="light"] .timeline-subtitle {
-        color: var(--primary);
-    }
-
-    .timeline-date {
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin-bottom: 1rem;
-    }
-
-    .timeline-description {
-        font-size: 0.95rem;
-        line-height: 1.6;
-        color: var(--text-secondary);
-    }
-
-    .achievements {
-        margin-top: 1rem;
-        list-style: none;
-    }
-
-    .achievements li {
-        padding-left: 1.5rem;
-        margin-bottom: 0.5rem;
-        position: relative;
-        font-size: 0.9rem;
-    }
-
-    .achievements li::before {
-        content: '';
-        position: absolute;
-        left: 0;
-        width: 16px;
-        height: 16px;
-        top: 3px;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230A84FF'%3E%3Cpath d='M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z'/%3E%3C/svg%3E");
-        background-size: contain;
-    }
-
-    /* Education Grid */
-    .education-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
-    }
-
-    .education-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        padding: 2rem;
-        display: flex;
-        gap: 2rem;
-    }
-
-    [data-theme="light"] .education-card {
-        box-shadow: 0 4px 15px var(--shadow-color);
-    }
-
-    .education-logo {
-        width: 80px;
-        height: 80px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        color: rgba(255, 255, 255, 0.3);
-        overflow: hidden;
-    }
-
-    .education-logo img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .education-info h3 {
-        margin-bottom: 0.5rem;
-        color: var(--text-primary);
-    }
-
-    .education-subtitle {
-        color: var(--accent);
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-
-    [data-theme="light"] .education-subtitle {
-        color: var(--primary);
-    }
-
-    .education-date {
-        color: var(--text-muted);
-        font-size: 0.85rem;
-        margin-bottom: 1rem;
-    }
-
-    /* Light mode styles for about page cards */
-    [data-theme="light"] .about-cert-card {
-        box-shadow: 0 4px 15px var(--shadow-color);
-    }
-
-    [data-theme="light"] .about-cert-card:hover {
-        box-shadow: 0 8px 25px var(--card-hover-shadow);
-        border-color: var(--primary);
-    }
-
-    [data-theme="light"] .about-project-card {
-        box-shadow: 0 4px 15px var(--shadow-color);
-    }
-
-    [data-theme="light"] .about-project-card:hover {
-        box-shadow: 0 8px 25px var(--card-hover-shadow);
-        border-color: var(--primary);
-    }
-
-    [data-theme="light"] .about-cta-section {
-        background: var(--bg-card);
-        border-radius: 16px;
-        border: 1px solid var(--border-color);
-        box-shadow: 0 4px 15px var(--shadow-color);
-    }
-
-    [data-theme="light"] .skills-category-title {
-        color: var(--primary) !important;
-    }
-
-    /* Skills Summary Compact Layout */
-    .skills-summary-section {
-        padding: 4rem 0 !important;
-    }
-
-    .skills-grid-compact {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 2rem;
-    }
-
-    .skill-category-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: 16px;
-        padding: 1.5rem;
-        transition: all 0.3s ease;
-    }
-
-    .skill-category-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 40px rgba(10, 132, 255, 0.15);
-        border-color: var(--primary);
-    }
-
-    .skill-category-header {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-        margin-bottom: 1.25rem;
-        padding-bottom: 1rem;
-        border-bottom: 1px solid var(--border-color);
-    }
-
-    .skill-category-icon {
-        width: 40px;
-        height: 40px;
-        background: linear-gradient(135deg, var(--primary), var(--accent));
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        padding: 8px;
-        box-sizing: border-box;
-    }
-
-    .skill-category-icon svg {
-        width: 100%;
-        height: 100%;
-    }
-
-    .skill-category-title {
-        font-size: 1.1rem;
-        font-weight: 700;
-        color: var(--text-primary);
-        margin: 0;
-    }
-
-    .skill-item {
-        margin-bottom: 1rem;
-    }
-
-    .skill-item:last-child {
-        margin-bottom: 0;
-    }
-
-    .skill-item-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-    }
-
-    .skill-name {
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.95rem;
-        color: var(--text-primary);
-    }
-
-    .skill-icon {
-        width: 18px;
-        height: 18px;
-        color: var(--primary);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-    }
-
-    .skill-icon svg {
-        width: 100%;
-        height: 100%;
-    }
-
-    .skill-percentage {
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: var(--accent);
-        background: rgba(10, 132, 255, 0.1);
-        padding: 0.2rem 0.6rem;
-        border-radius: 20px;
-    }
-
-    .skill-bar-container {
-        width: 100%;
-        height: 8px;
-        background: rgba(10, 132, 255, 0.1);
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-    .skill-bar {
-        height: 100%;
-        background: linear-gradient(90deg, var(--primary), var(--accent));
-        border-radius: 10px;
-        transition: width 1s ease;
-    }
-
-    @media (max-width: 1024px) {
-        .about-hero {
-            grid-template-columns: 1fr;
-        }
-
-        .timeline::before {
-            left: 0;
-        }
-
-        .timeline-item {
-            width: 100%;
-            padding-left: 3rem;
-            text-align: left !important;
-            margin-left: 0 !important;
-        }
-
-        .timeline-dot {
-            left: 0;
-        }
-
-        .education-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .skills-grid-compact {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .about-hero {
-            margin-bottom: 2rem;
-        }
-
-        .about-image {
-            aspect-ratio: auto;
-            max-height: 300px;
-        }
-
-        .skills-grid-compact {
-            grid-template-columns: 1fr;
-        }
-
-        /* Certificates grid responsive */
-        section[style*="margin-top: 6rem"]>div[style*="grid-template-columns: repeat(4"] {
-            grid-template-columns: repeat(2, 1fr) !important;
-            gap: 1.5rem !important;
-        }
-
-        /* Featured Projects responsive */
-        section[style*="margin-top: 6rem"]>div[style*="grid-template-columns: repeat(3"] {
-            grid-template-columns: 1fr !important;
-            gap: 1.5rem !important;
-        }
-
-        .skills-grid-compact {
-            grid-template-columns: 1fr !important;
-            column-gap: 0 !important;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .skills-summary-section {
-            padding: 2rem 1rem !important;
-        }
-
-        section[style*="margin-top: 6rem"] {
-            padding: 2rem 1rem !important;
-        }
-
-        section[style*="text-align: center"][style*="padding: 4rem 2rem"] {
-            padding: 2rem 1rem !important;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/about.css' %}">
 {% endblock %}
 
 {% block content %}
 {% if about %}
-<section>
+<section class="about-section">
     <!-- About Hero -->
     <div class="about-hero">
         <!-- Profile Section -->
@@ -541,7 +40,7 @@
 
 <!-- Experience Timeline -->
 {% if experiences %}
-<section>
+<section class="about-section about-section-spaced">
     <p class="section-label">Professional History</p>
     <h2>Experience</h2>
 
@@ -572,42 +71,63 @@
 
 <!-- Education -->
 {% if education %}
-<section>
+<section class="about-section about-section-spaced">
     <p class="section-label">Academic Background</p>
     <h2>Education</h2>
 
     <div class="education-grid">
         {% for edu in education %}
-        <div class="education-card">
-            <div class="education-logo">
-                {% if edu.institution_logo %}
-                <img src="{{ edu.institution_logo.url }}" alt="{{ edu.institution }}">
-                {% else %}
-                <svg viewBox="0 0 24 24" fill="currentColor" style="width: 40px; height: 40px; color: var(--primary);">
-                    <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
-                </svg>
-                {% endif %}
+        <div class="education-card {% if edu.certificate_image %}has-certificate{% endif %}">
+            <div class="education-main">
+                <div class="education-logo">
+                    {% if edu.institution_logo %}
+                    <img src="{{ edu.institution_logo.url }}" alt="{{ edu.institution }}">
+                    {% else %}
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="education-logo-icon">
+                        <path d="M12 3L1 9l11 6 9-4.91V17h2V9M5 13.18v4L12 21l7-3.82v-4L12 17l-7-3.82z" />
+                    </svg>
+                    {% endif %}
+                </div>
+                <div class="education-info">
+                    <h3>{{ edu.degree }}</h3>
+                    <div class="education-subtitle">{{ edu.institution }}</div>
+                    <div class="education-date">{{ edu.get_date_range }}</div>
+                    <p class="education-field">{{ edu.field_of_study }}</p>
+                    {% if edu.grade %}
+                    <p class="education-grade">Grade: {{ edu.grade }}</p>
+                    {% endif %}
+                </div>
             </div>
-            <div class="education-info">
-                <h3>{{ edu.degree }}</h3>
-                <div class="education-subtitle">{{ edu.institution }}</div>
-                <div class="education-date">{{ edu.start_date|date:"Y" }} - {% if edu.current %}Present{% else %}{{
-                    edu.end_date|date:"Y" }}{% endif %}</div>
-                <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">{{ edu.field_of_study }}</p>
-                {% if edu.grade %}
-                <p style="font-size: 0.85rem; color: var(--accent);">Grade: {{ edu.grade }}</p>
-                {% endif %}
+            {% if edu.certificate_image %}
+            <div class="education-certificate"
+                onclick="openCertificateLightbox('{{ edu.certificate_image.url }}', '{{ edu.degree }} - {{ edu.institution }}')">
+                <img src="{{ edu.certificate_image.url }}" alt="{{ edu.degree }} Certificate">
+                <div class="certificate-overlay">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                        <path
+                            d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                        <path d="M12 10h-2v2H9v-2H7V9h2V7h1v2h2v1z" />
+                    </svg>
+                    <span>View Certificate</span>
+                </div>
             </div>
+            {% endif %}
         </div>
         {% endfor %}
     </div>
 </section>
+
+<!-- Certificate Lightbox -->
+<div id="certificateLightbox" class="certificate-lightbox" onclick="closeCertificateLightbox()">
+    <span class="lightbox-close" onclick="closeCertificateLightbox()">&times;</span>
+    <img id="certificateLightboxImg" class="lightbox-content" src="" alt="">
+    <div id="certificateLightboxCaption" class="lightbox-caption"></div>
+</div>
 {% endif %}
 
 <!-- Skills Summary -->
 {% if skills %}
-<section class="skills-summary-section"
-    style="max-width: 1400px; margin: 0 auto; padding: 0 2rem; box-sizing: border-box; width: 100%;">
+<section class="about-section about-section-spaced skills-summary-section">
     <p class="section-label">Technical Proficiencies</p>
     <h2>Skills Summary</h2>
 
@@ -658,7 +178,8 @@
                     <span class="skill-percentage">{{ skill.proficiency }}%</span>
                 </div>
                 <div class="skill-bar-container">
-                    <div class="skill-bar" style="width: {{ skill.proficiency }}%;"></div>
+                    <div class="skill-bar" style="width: {{ skill.proficiency|default_if_none:'0'|floatformat:0 }}%;">
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -670,109 +191,81 @@
 
 <!-- Certifications Section -->
 {% if certificates %}
-<section style="margin-top: 6rem; padding: 0 2rem; box-sizing: border-box; width: 100%;">
+<section class="about-section about-section-spaced">
     <p class="section-label">Credentials</p>
     <h2>Certifications</h2>
 
-    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-bottom: 3rem;">
+    <div class="cert-grid">
         {% for cert in certificates %}
-        <div class="about-cert-card"
-            style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; transition: all 0.3s ease;">
-            <div
-                style="width: 100%; height: 200px; background: linear-gradient(135deg, rgba(10, 132, 255, 0.1), rgba(0, 217, 255, 0.1)); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+        <div class="about-cert-card">
+            <div class="cert-image">
                 {% if cert.certificate_image %}
-                <img src="{{ cert.certificate_image.url }}" alt="{{ cert.certificate_name }}"
-                    style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="{{ cert.certificate_image.url }}" alt="{{ cert.certificate_name }}">
                 {% else %}
-                <svg viewBox="0 0 24 24" fill="currentColor"
-                    style="width: 60px; height: 60px; color: rgba(10, 132, 255, 0.5);">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="cert-placeholder-icon">
                     <path
                         d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
                 {% endif %}
             </div>
-            <div style="padding: 1.5rem;">
-                <h3 style="margin: 0 0 0.5rem 0; color: var(--text-primary); font-size: 1rem;">{{cert.certificate_name}}
-                </h3>
-                <p style="margin: 0 0 0.5rem 0; color: var(--accent); font-size: 0.9rem; font-weight: 500;">
-                    {{cert.issuing_organization}}</p>
-                <div style="margin-bottom: 1rem;">
-                    {% if cert.expiry_date %}
-                    {% if cert.expiry_date > now %}
-                    <span
-                        style="display: inline-block; background: rgba(34, 197, 94, 0.2); color: #22c55e; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">Active</span>
-                    {% else %}
-                    <span
-                        style="display: inline-block; background: rgba(239, 68, 68, 0.2); color: #ef4444; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">Expired</span>
-                    {% endif %}
-                    {% else %}
-                    <span
-                        style="display: inline-block; background: rgba(10, 132, 255, 0.2); color: var(--primary); padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600;">Permanent</span>
-                    {% endif %}
-                </div>
-                <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-                    <p style="margin: 0 0 0.3rem 0;"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"
-                            style="vertical-align: middle; margin-right: 4px;">
-                            <path
-                                d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z" />
-                        </svg><strong>Issued:</strong> {{ cert.issue_date|date:"M Y" }}</p>
-                    {% if cert.expiry_date %}
-                    <p style="margin: 0;"><svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"
-                            style="vertical-align: middle; margin-right: 4px;">
-                            <path
-                                d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
-                        </svg><strong>Expires:</strong> {{ cert.expiry_date|date:"M Y" }}</p>
-                    {% endif %}
+            <div class="cert-content">
+                <h3 class="cert-title">{{ cert.certificate_name }}</h3>
+                <p class="cert-issuer">{{ cert.issuing_organization }}</p>
+                {% if cert.expiry_date %}
+                {% if cert.expiry_date > now %}
+                <span class="cert-badge active">Active</span>
+                {% else %}
+                <span class="cert-badge expired">Expired</span>
+                {% endif %}
+                {% else %}
+                <span class="cert-badge permanent">Permanent</span>
+                {% endif %}
+                <div class="cert-date">
+                    <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14">
+                        <path
+                            d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V10h14v10zm0-12H5V6h14v2z" />
+                    </svg>
+                    <span>Issued: {{ cert.issue_date|date:"M Y" }}</span>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
 
-    <div style="text-align: center;">
-        <a href="{% url 'certificates' %}"
-            style="display: inline-block; background: linear-gradient(135deg, var(--primary), var(--accent)); color: white; padding: 0.75rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 600; transition: all 0.3s ease; border: none; cursor: pointer;">View
-            All Certifications</a>
+    <div class="section-center">
+        <a href="{% url 'certificates' %}" class="btn btn-primary">View All Certifications</a>
     </div>
 </section>
 {% endif %}
 
 <!-- Featured Projects -->
 {% if projects %}
-<section style="margin-top: 6rem; padding: 0 2rem; box-sizing: border-box; width: 100%;">
+<section class="about-section about-section-spaced">
     <p class="section-label">My Work</p>
     <h2>Featured Projects</h2>
 
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-bottom: 3rem;">
+    <div class="projects-grid">
         {% for project in projects %}
-        <div class="about-project-card"
-            style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; transition: all 0.3s ease;">
-            <div
-                style="width: 100%; height: 200px; background: linear-gradient(135deg, rgba(10, 132, 255, 0.2), rgba(0, 217, 255, 0.1)); display: flex; align-items: center; justify-content: center; font-size: 3rem; overflow: hidden;">
+        <div class="about-project-card">
+            <div class="project-image">
                 {% if project.image %}
-                <img src="{{ project.image.url }}" alt="{{ project.title }}"
-                    style="width: 100%; height: 100%; object-fit: cover;">
+                <img src="{{ project.image.url }}" alt="{{ project.title }}">
                 {% else %}
-                <svg viewBox="0 0 24 24" fill="currentColor"
-                    style="width: 60px; height: 60px; color: rgba(10, 132, 255, 0.5);">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="project-placeholder-icon">
                     <path d="M3.5 18.5l6-6 4 4L22 6.92 20.59 5.5l-7.09 8.58-4-4L2 18.5h1.5z" />
                 </svg>
                 {% endif %}
             </div>
-            <div style="padding: 1.5rem;">
-                <h3 style="margin-bottom: 0.75rem; font-size: 1.2rem; color: var(--text-primary);">{{ project.title }}
-                </h3>
-                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1rem; line-height: 1.5;">
-                    {{ project.description|truncatewords:20 }}</p>
+            <div class="project-content">
+                <h3 class="project-title">{{ project.title }}</h3>
+                <p class="project-desc">{{ project.description|truncatewords:20 }}</p>
                 {% if project.project_url or project.github_url %}
-                <div>
+                <div class="project-buttons">
                     {% if project.project_url %}
-                    <a href="{{ project.project_url }}" target="_blank" class="btn btn-primary"
-                        style="font-size: 0.85rem; padding: 0.5rem 1rem; margin-right: 0.5rem;">View Project</a>
+                    <a href="{{ project.project_url }}" target="_blank" class="btn btn-primary btn-sm">View Project</a>
                     {% endif %}
                     {% if project.github_url %}
-                    <a href="{{ project.github_url }}" target="_blank" class="btn btn-secondary"
-                        style="font-size: 0.85rem; padding: 0.5rem 1rem;">GitHub</a>
+                    <a href="{{ project.github_url }}" target="_blank" class="btn btn-secondary btn-sm">GitHub</a>
                     {% endif %}
                 </div>
                 {% endif %}
@@ -780,138 +273,49 @@
         </div>
         {% endfor %}
     </div>
-    <div style="text-align: center;">
-        <a href="{% url 'projects' %}" class="btn btn-secondary" style="font-size: 1rem;">View All Projects</a>
+
+    <div class="section-center">
+        <a href="{% url 'projects' %}" class="btn btn-secondary">View All Projects</a>
     </div>
 </section>
 {% endif %}
 
 <!-- Contact CTA -->
-<section class="about-cta-section"
-    style="margin-top: 6rem; text-align: center; padding: 4rem 2rem; box-sizing: border-box; width: 100%; max-width: 100%;">
-    <h2 style="margin-bottom: 1.5rem; color: var(--text-primary);">Ready to Collaborate?</h2>
-    <p style="color: var(--text-secondary); margin-bottom: 2rem; font-size: 1.1rem;">I'm always interested in
-        discussing data analytics projects and opportunities.</p>
-    <a href="{% url 'contact' %}" class="btn btn-primary" style="font-size: 1rem;">Get In Touch</a>
+<section class="about-cta-section">
+    <h2>Ready to Collaborate?</h2>
+    <p>I'm always interested in discussing data analytics projects and opportunities.</p>
+    <a href="{% url 'contact' %}" class="btn btn-primary">Get In Touch</a>
 </section>
 
 {% else %}
-<section style="text-align: center; padding: 6rem 2rem; box-sizing: border-box; width: 100%;">
+<section class="about-empty">
     <h2>About Section Coming Soon</h2>
     <p>Profile information will appear here. Add your details in the admin panel.</p>
 </section>
 {% endif %}
 
-<style>
-    @media (max-width: 480px) {
-        .about-header {
-            grid-template-columns: 1fr;
-            gap: 2rem;
-            padding: 2rem 1rem;
-        }
+<script>
+    function openCertificateLightbox(src, caption) {
+        const lightbox = document.getElementById('certificateLightbox');
+        const img = document.getElementById('certificateLightboxImg');
+        const captionEl = document.getElementById('certificateLightboxCaption');
 
-        .about-header h1 {
-            font-size: 1.8rem;
-        }
-
-        .about-profile {
-            max-width: 100%;
-        }
-
-        .about-bio {
-            padding: 0;
-        }
-
-        .about-bio p {
-            font-size: 0.95rem;
-        }
-
-        .timeline {
-            padding: 0 1rem;
-        }
-
-        .timeline-item {
-            margin-left: 1.5rem !important;
-        }
-
-        .timeline-dot {
-            width: 16px;
-            height: 16px;
-            left: -2rem;
-        }
-
-        .timeline-title {
-            font-size: 1.1rem;
-        }
-
-        .timeline-content {
-            padding-left: 1rem;
-        }
-
-        .section-title {
-            font-size: 1.5rem;
-        }
-
-        .section-label {
-            font-size: 0.75rem;
-        }
-
-        .featured-projects {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            padding: 0 1rem;
-        }
-
-        .featured-project-card {
-            padding: 1rem;
-        }
-
-        .featured-project-card img {
-            height: 180px;
-        }
-
-        .featured-project-meta {
-            gap: 0.5rem;
-        }
-
-        .featured-project-meta span {
-            font-size: 0.75rem;
-        }
-
-        section[style*="margin-top: 6rem"] {
-            margin-top: 3rem !important;
-            padding: 2rem 1rem !important;
-        }
-
-        section[style*="margin-top: 6rem"] h2 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        section[style*="margin-top: 6rem"] p {
-            font-size: 0.95rem;
-            margin-bottom: 1.5rem;
-        }
-
-        /* Certificates grid single column on mobile */
-        section[style*="margin-top: 6rem"]>div[style*="grid-template-columns: repeat(4"] {
-            grid-template-columns: 1fr !important;
-            gap: 1rem !important;
-        }
-
-        section[style*="margin-top: 6rem"] .btn {
-            width: 100%;
-            padding: 0.9rem;
-            font-size: 0.9rem;
-        }
-
-        section[style*="text-align: center; padding: 6rem"] {
-            padding: 3rem 1rem !important;
-        }
-
-        section[style*="text-align: center; padding: 6rem"] h2 {
-            font-size: 1.5rem;
-        }
+        lightbox.style.display = 'flex';
+        img.src = src;
+        captionEl.textContent = caption || '';
+        document.body.style.overflow = 'hidden';
     }
-</style>
+
+    function closeCertificateLightbox() {
+        const lightbox = document.getElementById('certificateLightbox');
+        lightbox.style.display = 'none';
+        document.body.style.overflow = '';
+    }
+
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') {
+            closeCertificateLightbox();
+        }
+    });
+</script>
 {% endblock %}

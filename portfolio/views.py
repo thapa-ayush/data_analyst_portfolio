@@ -65,7 +65,7 @@ def about_page(request):
     
     about = About.objects.first()
     experiences = Experience.objects.all().order_by('-start_date')
-    education = Education.objects.all().order_by('-start_date')
+    education = Education.objects.all().order_by('order', '-end_year', '-start_year')
     skills = Skill.objects.all().order_by('category', '-proficiency')
     certificates = Certificate.objects.order_by('-issue_date')[:4]
     
@@ -209,8 +209,27 @@ def contact_page(request):
         subject = request.POST.get('subject', '').strip()
         message_text = request.POST.get('message', '').strip()
 
+        # Debug: Print received values
+        print(f"DEBUG Contact Form - POST data received:")
+        print(f"  name: '{name}'")
+        print(f"  email: '{email}'")
+        print(f"  subject: '{subject}'")
+        print(f"  message: '{message_text[:100] if message_text else 'EMPTY'}...'")
+        print(f"  All POST keys: {list(request.POST.keys())}")
+
         # Validate required fields
-        if not all([name, email, subject, message_text]):
+        missing_fields = []
+        if not name:
+            missing_fields.append('name')
+        if not email:
+            missing_fields.append('email')
+        if not subject:
+            missing_fields.append('subject')
+        if not message_text:
+            missing_fields.append('message')
+        
+        if missing_fields:
+            print(f"  VALIDATION FAILED - Missing fields: {missing_fields}")
             if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
                 return render(request, 'portfolio/contact.html', 
                             get_base_context(request), status=400)

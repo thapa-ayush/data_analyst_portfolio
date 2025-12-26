@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.utils.html import format_html
+from django.utils.html import format_html, mark_safe
 from django.db import models
 from datetime import date
-from .models import About, Skill, Project, Certificate, Experience, Education, ContactMessage
+from .models import About, Skill, Project, ProjectImage, Certificate, Experience, Education, ContactMessage
 
 
 class CustomModelForm(admin.ModelAdmin):
@@ -170,12 +170,42 @@ class SkillAdmin(admin.ModelAdmin):
         """Display icon preview"""
         svg = obj.get_icon_svg()
         if svg:
-            return format_html(
-                '<div style="width: 24px; height: 24px; color: #0A84FF;">{}</div>',
-                svg
+            return mark_safe(
+                f'<div style="width: 24px; height: 24px; color: #0A84FF;">{svg}</div>'
             )
         return '-'
     icon_preview.short_description = 'Icon'
+
+
+# ==================== PROJECT IMAGE INLINE ====================
+class ProjectImageInline(admin.TabularInline):
+    """Inline admin for project images"""
+    model = ProjectImage
+    extra = 1
+    fields = ('image', 'caption', 'order', 'image_preview', 'copy_url')
+    readonly_fields = ('image_preview', 'copy_url')
+    ordering = ('order',)
+    
+    def image_preview(self, obj):
+        if obj.image:
+            return format_html(
+                '<img src="{}" style="max-height: 80px; max-width: 150px; '
+                'object-fit: contain; border-radius: 4px; border: 1px solid #ddd;"/>',
+                obj.image.url
+            )
+        return '-'
+    image_preview.short_description = 'Preview'
+    
+    def copy_url(self, obj):
+        if obj.image:
+            return format_html(
+                '<input type="text" value=\'<img src="{}" alt="" style="max-width:100%;">\' '
+                'style="width: 300px; font-size: 11px; padding: 4px;" readonly '
+                'onclick="this.select(); document.execCommand(\'copy\');" title="Click to select, then Ctrl+C to copy"/>',
+                obj.image.url
+            )
+        return '-'
+    copy_url.short_description = 'Copy HTML (click to select)'
 
 
 # ==================== PROJECT ADMIN ====================
@@ -183,7 +213,8 @@ class SkillAdmin(admin.ModelAdmin):
 class ProjectAdmin(CustomModelForm):
     """Enhanced admin for Projects with featured status and tech tags"""
     
-    list_display = ('title', 'featured_badge', 'tech_preview', 'date_completed', 'order', 'has_links')
+    list_display = ('title', 'featured_badge', 'tech_preview', 'date_completed', 'order', 'has_links', 'image_count')
+    inlines = [ProjectImageInline]
     list_editable = ('order',)
     list_filter = ('featured', 'status', 'category', 'date_completed')
     search_fields = ('title', 'description', 'technologies')
@@ -200,7 +231,7 @@ class ProjectAdmin(CustomModelForm):
         ('Detailed Information', {
             'fields': ('detailed_description',),
             'classes': ('collapse',),
-            'description': 'Full project description. You can use HTML tags for formatting:<br><strong>Examples:</strong><br>&lt;p&gt;Paragraph&lt;/p&gt;<br>&lt;strong&gt;Bold Text&lt;/strong&gt;<br>&lt;em&gt;Italic Text&lt;/em&gt;<br>&lt;h3&gt;Subheading&lt;/h3&gt;<br>&lt;ul&gt;&lt;li&gt;List item&lt;/li&gt;&lt;/ul&gt;<br>&lt;img src="URL" alt="description" style="max-width:100%;"&gt;'
+            'description': 'Full project description. You can use HTML tags for formatting:<br><strong>Examples:</strong><br>&lt;p&gt;Paragraph&lt;/p&gt;<br>&lt;strong&gt;Bold Text&lt;/strong&gt;<br>&lt;em&gt;Italic Text&lt;/em&gt;<br>&lt;h3&gt;Subheading&lt;/h3&gt;<br>&lt;ul&gt;&lt;li&gt;List item&lt;/li&gt;&lt;/ul&gt;<br><br><strong>📷 To insert gallery images:</strong><br>&lt;img src="/media/projects/gallery/YOUR_IMAGE.png" alt="description" style="max-width:100%;"&gt;<br><em>Note: Always use /media/ prefix for uploaded images</em>'
         }),
         ('Technologies & Achievements', {
             'fields': ('technologies', 'key_achievements'),
@@ -249,6 +280,18 @@ class ProjectAdmin(CustomModelForm):
             icons += '💻'
         return format_html(icons if icons else '—')
     has_links.short_description = 'Links'
+    
+    def image_count(self, obj):
+        """Show count of gallery images"""
+        count = obj.images.count()
+        if count > 0:
+            return format_html(
+                '<span style="background: #10B981; color: white; '
+                'padding: 2px 8px; border-radius: 10px; font-size: 11px;">{} 📷</span>',
+                count
+            )
+        return '—'
+    image_count.short_description = 'Gallery'
     
     def mark_featured(self, request, queryset):
         count = queryset.update(featured=True)
@@ -402,9 +445,9 @@ class ExperienceAdmin(admin.ModelAdmin):
 class EducationAdmin(admin.ModelAdmin):
     """Enhanced admin for Education with degree info"""
     
-    list_display = ('degree', 'institution', 'field_of_study', 'date_range', 'current_badge', 'grade_display', 'order')
+    list_display = ('degree', 'institution', 'field_of_study', 'date_range', 'current_badge', 'has_certificate', 'order')
     list_editable = ('order',)
-    list_filter = ('current', 'institution', 'start_date', 'degree')
+    list_filter = ('current', 'institution', 'degree')
     search_fields = ('degree', 'institution', 'field_of_study')
     
     fieldsets = (
@@ -412,12 +455,16 @@ class EducationAdmin(admin.ModelAdmin):
             'fields': ('institution', 'degree', 'field_of_study', 'institution_logo'),
         }),
         ('Study Duration', {
-            'fields': ('start_date', 'end_date', 'current'),
-            'description': 'If currently studying, leave end_date blank and check "Current"'
+            'fields': (('start_year', 'start_month'), ('end_year', 'end_month'), 'current'),
+            'description': 'Enter year only, or year + month. Leave end date blank and check "Current" if still studying.'
         }),
         ('Academic Info', {
             'fields': ('grade', 'description'),
             'description': 'Grade (GPA, honors, etc.) and additional notes'
+        }),
+        ('Certificate/Diploma Image', {
+            'fields': ('certificate_image',),
+            'description': 'Upload an image of your certificate or diploma (optional). Will be displayed on the education card.'
         }),
         ('Display Settings', {
             'fields': ('order',),
@@ -430,14 +477,16 @@ class EducationAdmin(admin.ModelAdmin):
         """Allow deleting education entries"""
         return True
     
+    def has_certificate(self, obj):
+        """Show if certificate image is uploaded"""
+        if obj.certificate_image:
+            return format_html('<span style="color: #10B981;">📜 Yes</span>')
+        return '—'
+    has_certificate.short_description = 'Certificate'
+    
     def date_range(self, obj):
         """Display date range in human-readable format"""
-        start = obj.start_date.strftime('%b %Y')
-        if obj.current:
-            end = 'Present'
-        else:
-            end = obj.end_date.strftime('%b %Y') if obj.end_date else '?'
-        return f'{start} - {end}'
+        return obj.get_date_range() or "—"
     date_range.short_description = 'Duration'
     
     def current_badge(self, obj):
@@ -454,7 +503,7 @@ class EducationAdmin(admin.ModelAdmin):
     grade_display.short_description = 'Grade'
     
     def mark_current(self, request, queryset):
-        queryset.update(current=True, end_date=None)
+        queryset.update(current=True, end_year=None, end_month=None)
         self.message_user(request, f'{queryset.count()} education entry/ies marked as current.')
     mark_current.short_description = 'Mark as currently studying'
     
@@ -472,16 +521,16 @@ class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'email', 'subject', 'read_badge', 'created_at')
     list_editable = ()
     list_filter = ('read', 'created_at')
-    search_fields = ('name', 'email', 'subject', 'message')
-    readonly_fields = ('name', 'email', 'subject', 'message', 'created_at')
+    search_fields = ('name', 'email', 'subject', 'message', 'phone')
+    readonly_fields = ('name', 'email', 'phone', 'subject', 'message', 'created_at')
     date_hierarchy = 'created_at'
     
     fieldsets = (
-        ('Message Details', {
-            'fields': ('name', 'email', 'subject'),
+        ('Sender Details', {
+            'fields': ('name', 'email', 'phone'),
         }),
-        ('Message Content', {
-            'fields': ('message',),
+        ('Message', {
+            'fields': ('subject', 'message'),
         }),
         ('Status', {
             'fields': ('read', 'created_at'),

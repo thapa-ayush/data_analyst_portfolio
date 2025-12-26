@@ -1,367 +1,18 @@
 {% extends 'portfolio/base.html' %}
+{% load static %}
 
 {% block title %}Projects | Data Analyst Portfolio{% endblock %}
 {% block meta_description %}Browse my data analytics projects and portfolio work{% endblock %}
 
 {% block extra_css %}
-<style>
-    .projects-toolbar {
-        display: flex;
-        gap: 2rem;
-        margin-bottom: 3rem;
-        flex-wrap: wrap;
-        align-items: center;
-    }
-
-    .filter-group {
-        display: flex;
-        gap: 1rem;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .filter-label {
-        font-size: 0.9rem;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: var(--accent);
-        font-weight: 600;
-    }
-
-    [data-theme="light"] .filter-label {
-        color: var(--primary);
-    }
-
-    select {
-        padding: 0.7rem 1rem;
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: 6px;
-        color: var(--text-primary);
-        font-family: 'JetBrains Mono', monospace;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    [data-theme="light"] select {
-        box-shadow: 0 2px 8px var(--shadow-color);
-    }
-
-    select:hover,
-    select:focus {
-        border-color: var(--primary);
-        box-shadow: 0 0 15px var(--shadow-color);
-    }
-
-    .projects-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 2rem;
-        margin-bottom: 3rem;
-    }
-
-    .project-card {
-        background: var(--bg-card);
-        border: 1px solid var(--border-color);
-        border-radius: 12px;
-        overflow: hidden;
-        transition: all 0.3s ease;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    [data-theme="light"] .project-card {
-        box-shadow: 0 4px 15px var(--shadow-color);
-    }
-
-    .project-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 20px 40px var(--card-hover-shadow);
-        border-color: var(--primary);
-    }
-
-    .project-image {
-        width: 100%;
-        height: 200px;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 3rem;
-        color: rgba(255, 255, 255, 0.3);
-        overflow: hidden;
-        position: relative;
-    }
-
-    [data-theme="light"] .project-image {
-        background: linear-gradient(135deg, rgba(0, 102, 204, 0.8) 0%, rgba(0, 153, 204, 0.8) 100%);
-    }
-
-    .project-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .project-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .project-card:hover .project-overlay {
-        opacity: 1;
-    }
-
-    .project-content {
-        padding: 1.5rem;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .project-featured {
-        display: inline-block;
-        padding: 0.3rem 0.8rem;
-        background: rgba(255, 107, 53, 0.2);
-        border: 1px solid var(--secondary);
-        color: var(--secondary);
-        border-radius: 20px;
-        font-size: 0.75rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        margin-bottom: 1rem;
-        width: fit-content;
-    }
-
-    .project-title {
-        font-size: 1.3rem;
-        font-weight: 700;
-        margin-bottom: 0.5rem;
-        color: var(--text-primary);
-    }
-
-    .project-date {
-        font-size: 0.85rem;
-        color: var(--accent);
-        margin-bottom: 1rem;
-    }
-
-    [data-theme="light"] .project-date {
-        color: var(--primary);
-    }
-
-    .project-description {
-        font-size: 0.95rem;
-        color: var(--text-secondary);
-        margin-bottom: 1rem;
-        line-height: 1.6;
-        flex-grow: 1;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .project-technologies {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-    }
-
-    .tech-tag {
-        padding: 0.4rem 0.8rem;
-        background: var(--tag-bg);
-        border: 1px solid var(--primary);
-        border-radius: 16px;
-        color: var(--accent);
-        font-size: 0.8rem;
-        font-weight: 600;
-    }
-
-    [data-theme="light"] .tech-tag {
-        color: var(--primary);
-    }
-
-    .project-links {
-        display: flex;
-        gap: 1rem;
-        margin-top: auto;
-    }
-
-    .project-link {
-        flex: 1;
-        padding: 0.6rem 1rem;
-        background: transparent;
-        border: 1px solid var(--primary);
-        color: var(--primary);
-        border-radius: 6px;
-        text-decoration: none;
-        text-align: center;
-        font-size: 0.85rem;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        cursor: pointer;
-        font-family: 'JetBrains Mono', monospace;
-    }
-
-    .project-link:hover {
-        background: var(--primary);
-        color: #FFFFFF;
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 4rem 2rem;
-        background: var(--bg-card);
-        border: 1px dashed var(--border-color);
-        border-radius: 12px;
-        margin: 3rem 0;
-        box-sizing: border-box;
-        width: 100%;
-    }
-
-    [data-theme="light"] .empty-state {
-        box-shadow: 0 4px 15px var(--shadow-color);
-    }
-
-    .empty-state h3 {
-        margin-bottom: 1rem;
-    }
-
-    @media (max-width: 1024px) {
-        .projects-grid {
-            grid-template-columns: repeat(2, 1fr);
-        }
-    }
-
-    @media (max-width: 768px) {
-        .projects-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .projects-toolbar {
-            flex-direction: column;
-            align-items: flex-start;
-        }
-
-        .filter-group {
-            width: 100%;
-            flex-direction: column;
-        }
-
-        select {
-            width: 100%;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .projects-toolbar {
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .filter-label {
-            font-size: 0.75rem;
-        }
-
-        select {
-            padding: 0.6rem 0.8rem;
-            font-size: 0.85rem;
-        }
-
-        .projects-grid {
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .project-card {
-            border-radius: 8px;
-        }
-
-        .project-card:hover {
-            transform: translateY(-5px);
-        }
-
-        .project-image {
-            height: 180px;
-            font-size: 2rem;
-        }
-
-        .project-content {
-            padding: 1rem;
-        }
-
-        .project-featured {
-            padding: 0.25rem 0.6rem;
-            font-size: 0.7rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-title {
-            font-size: 1.1rem;
-            margin-bottom: 0.3rem;
-        }
-
-        .project-date {
-            font-size: 0.75rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-description {
-            font-size: 0.85rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .project-technologies {
-            gap: 0.4rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .tech-tag {
-            padding: 0.3rem 0.6rem;
-            font-size: 0.7rem;
-        }
-
-        .project-links {
-            gap: 0.5rem;
-        }
-
-        .project-link {
-            padding: 0.5rem 0.8rem;
-            font-size: 0.75rem;
-        }
-
-        .empty-state {
-            padding: 2rem 1rem;
-        }
-
-        .empty-state h3 {
-            font-size: 1.3rem;
-        }
-    }
-</style>
+<link rel="stylesheet" href="{% static 'css/projects.css' %}">
 {% endblock %}
 
 {% block content %}
 <section>
     <p class="section-label">Portfolio</p>
     <h2>My Projects</h2>
-    <p style="margin-bottom: 2rem; max-width: 600px;">A collection of my recent data analytics projects, showcasing my
+    <p class="projects-intro">A collection of my recent data analytics projects, showcasing my
         skills in analysis, visualization, and business intelligence.</p>
 
     {% if projects %}
@@ -392,14 +43,13 @@
                 {% if project.image %}
                 <img src="{{ project.image.url }}" alt="{{ project.title }}" loading="lazy">
                 {% else %}
-                <svg viewBox="0 0 24 24" fill="currentColor"
-                    style="width: 60px; height: 60px; color: rgba(10, 132, 255, 0.5);">
+                <svg viewBox="0 0 24 24" fill="currentColor" class="project-placeholder-icon">
                     <path d="M3.5 18.5l6-6 4 4L22 6.92 20.59 5.5l-7.09 8.58-4-4L2 18.5h1.5z" />
                 </svg>
                 {% endif %}
                 {% if project.featured %}
                 <div class="project-overlay">
-                    <svg viewBox="0 0 24 24" fill="currentColor" style="width: 48px; height: 48px;">
+                    <svg viewBox="0 0 24 24" fill="currentColor" class="project-overlay-icon">
                         <path
                             d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                     </svg>
@@ -408,8 +58,7 @@
             </div>
             <div class="project-content">
                 {% if project.featured %}
-                <span class="project-featured"><svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"
-                        style="vertical-align: middle; margin-right: 4px;">
+                <span class="project-featured"><svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
                         <path
                             d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                     </svg>Featured</span>

@@ -1288,8 +1288,8 @@
             if (savedTheme) {
                 return savedTheme;
             }
-            // Check system preference
-            return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+            // Default to dark if no preference
+            return 'dark';
         }
 
         // Apply theme
